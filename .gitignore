@@ -2,3 +2,6 @@
 .mypy_cache
 settings.py
 __pycache__
+.vscode
+.env
+.DS_Store
