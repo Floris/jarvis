@@ -1,9 +1,9 @@
 import openai
+from helpers.processor import parse_response
+from helpers.utils import remove_whitespace, save_code_to_file
+from prompts.prompts import PROMPT
 
-import settings
-from app.helpers.processor import parse_response
-from app.helpers.utils import remove_whitespace, save_code_to_file
-from app.prompts.prompts import PROMPT
+from settings import settings
 
 openai.api_key = settings.api_key
 

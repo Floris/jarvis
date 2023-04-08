@@ -1,4 +1,4 @@
-from app.helpers.utils import parse_str, remove_code_block, remove_whitespace
+from helpers.utils import parse_str, remove_code_block, remove_whitespace
 
 
 def parse_response(response: str) -> list[tuple[str, str, str]]:
