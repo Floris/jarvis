@@ -1,5 +1,3 @@
-from typing import List
-
 import openai
 
 import settings
@@ -14,13 +12,13 @@ def generate_chat(
     model: str = "gpt-3.5-turbo",
     max_tokens: int = 2200,
     n: int = 1,
-    stop: str | List[str] | None = None,
+    stop: str | list[str] | None = None,
     temperature: float = 0.5,
 ):
     messages = [
         {
             "role": "system",
-            "content": "You are a legendary coding assistant that generates code + project structure when needed.",
+            "content": "You are a legendary coding assistant that generates code + project structure when needed.",  # noqa E501
         },
         {
             "role": "user",
