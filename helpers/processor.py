@@ -1,9 +1,7 @@
-from typing import List, Tuple
-
 from helpers.utils import parse_str, remove_code_block, remove_whitespace
 
 
-def parse_response(response: str) -> List[Tuple[str, str, str]]:
+def parse_response(response: str) -> list[tuple[str, str, str]]:
     """
     Parse a string that contains information about a project's file structure and contents.
 
