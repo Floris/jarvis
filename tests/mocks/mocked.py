@@ -1,7 +1,7 @@
 mocked_data = """
 Here's the code to create a React web application for FIXEX, a cryptocurrency exchange:
 
-// File: index.html
+// File: public/index.html
 <!DOCTYPE html>
 <html>
   <head>
@@ -10,7 +10,7 @@ Here's the code to create a React web application for FIXEX, a cryptocurrency ex
   </head>
   <body>
     <div id="root"></div>
-    <script src="bundle.js"></script>
+    <script src="../index.js"></script>
   </body>
 </html>
 
@@ -36,7 +36,7 @@ Here's the code to create a React web application for FIXEX, a cryptocurrency ex
   }
 }
 
-// File: App.js
+// File: src/App.js
 import React from 'react';
 import { Navbar, Nav, Button } from 'react-bootstrap';
 import { FaBitcoin, FaEthereum } from 'react-icons/fa';
