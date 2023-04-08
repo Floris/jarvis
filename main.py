@@ -48,8 +48,6 @@ if __name__ == "__main__":
     response = generate_chat()
     print(f"Response: {response}")  # TODO: remove later
 
-    a: int = ""
-
     file_code_pairs = parse_response(response)
     print(f"Parsed file code pairs: {file_code_pairs}")  # TODO: remove later
 
