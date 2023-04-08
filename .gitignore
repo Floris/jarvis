@@ -6,3 +6,6 @@ __pycache__
 .env
 .DS_Store
 /generated
+.idea
+.idea/
+.pytest_cache

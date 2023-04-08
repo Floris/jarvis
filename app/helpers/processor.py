@@ -39,6 +39,7 @@ def parse_response(response: str) -> list[tuple[str, str, str]]:
 
             parsing_code = True
 
+            # TODO: change for just clear the line to blank
             if line.startswith("# File:"):
                 file_path = parse_str(line, "# File:")
             elif line.startswith("// File:"):
@@ -56,7 +57,15 @@ def parse_response(response: str) -> list[tuple[str, str, str]]:
                 file_path.rsplit("/", 1) if "/" in file_path else ("", file_path)
             )
         elif parsing_code and line.strip():
-            current_code.append(remove_code_block(line))
+            if "Done:" in line:
+                # Add the previous file's code to the file_code_pairs list
+                file_code_pairs.append(
+                    (current_folder, current_file, "\n".join(current_code))
+                )
+                current_code = []
+                parsing_code = False
+            else:
+                current_code.append(remove_code_block(line))
 
     # Add the last file's code to the file_code_pairs list
     if parsing_code:

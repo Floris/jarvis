@@ -5,17 +5,15 @@ from prompts.prompts import PROMPT
 
 from settings import settings
 
-# from mocks.mocked import mocked_data
-
 openai.api_key = settings.api_key
 
 
 def generate_chat(
     model: str = "gpt-3.5-turbo",
-    max_tokens: int = 3000,
+    temperature: float = 0.5,
     n: int = 1,
     stop: str | list[str] | None = None,
-    temperature: float = 0.5,
+    max_tokens: int = 3000,
 ):
     messages = [
         {
@@ -30,12 +28,12 @@ def generate_chat(
 
     # Call the OpenAI API to get the chat response
     response = openai.ChatCompletion.create(
-        max_tokens=max_tokens,
-        n=n,
-        stop=stop,
-        temperature=temperature,
         model=model,
         messages=messages,
+        temperature=temperature,
+        n=n,
+        stop=stop,
+        max_tokens=max_tokens,
     )
 
     print("API Response:")  # TODO: remove later
@@ -44,7 +42,7 @@ def generate_chat(
     return response.choices[0].message.content.strip()
 
 
-if __name__ == "__main__":
+def main():
     response = generate_chat()
     print(f"Response: {response}")  # TODO: remove later
 
@@ -57,3 +55,7 @@ if __name__ == "__main__":
             remove_whitespace(current_folder),
             remove_whitespace(current_file),
         )
+
+
+if __name__ == "__main__":
+    main()
