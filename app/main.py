@@ -5,6 +5,8 @@ from prompts.prompts import PROMPT
 
 from settings import settings
 
+# from mocks.mocked import mocked_data
+
 openai.api_key = settings.api_key
 
 
