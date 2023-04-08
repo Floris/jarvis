@@ -1,6 +1,6 @@
 import os
 
-from prompts.prompts import PROMPT_NAME
+from app.prompts.prompts import PROMPT_NAME
 
 
 def remove_code_block(s: str) -> str:
