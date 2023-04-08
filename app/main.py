@@ -10,7 +10,7 @@ openai.api_key = settings.api_key
 
 def generate_chat(
     model: str = "gpt-3.5-turbo",
-    max_tokens: int = 2200,
+    max_tokens: int = 3000,
     n: int = 1,
     stop: str | list[str] | None = None,
     temperature: float = 0.5,
