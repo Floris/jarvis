@@ -1,7 +1,5 @@
 import os
 
-from prompts.prompts import PROMPT_NAME
-
 
 def remove_code_block(s: str) -> str:
     """
@@ -55,16 +53,15 @@ def save_code_to_file(code: str, file_path: str, file: str) -> None:
             os.makedirs(folder)
         return folder
 
-    # create folder from PROMPT_NAME
-    from_base_path_create_folder(PROMPT_NAME)
-
     # create path from file_path
     from_base_path_create_folder(file_path)
 
-    file_path = os.path.join(f"{base_path}/{PROMPT_NAME}", file_path, file)
+    file_path = os.path.join(base_path, file_path, file)
 
     print(f"Saving code to file: {file_path}")  # TODO: remove later
-    with open(file_path, "w") as f:
+
+    # append code to file, using append incase the file already exists
+    with open(file_path, "a") as f:
         f.write(code)
 
     print(f"saved file: {file_path}")
