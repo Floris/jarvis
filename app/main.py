@@ -45,6 +45,15 @@ def generate_chat(
 ) -> tuple[list[Message], Literal["length", "stop", "eos"]]:
     """
     Generate a chat response from the OpenAI API.
+
+    Args:
+        conversation (List[Message]): A list of Message dictionaries representing the conversation so far.
+        model (str, optional): The OpenAI model to use for the chat. Defaults to "gpt-3.5-turbo".
+        temperature (float, optional): Controls randomness in the generated response. Defaults to 0.5.
+        stop (Union[str, List[str], None], optional): Token(s) that indicate the end of the generated response. Defaults to None.
+
+    Returns:
+        tuple[List[Message], Literal["length", "stop", "eos"]]: Updated conversation list and the reason the conversation finished.
     """
 
     response = ApiResponse.parse_obj(
@@ -61,7 +70,14 @@ def generate_chat(
     print(
         "API response.choices[0].finish_reason ===> ", response.choices[0].finish_reason
     )
-    print("API response.choices[0].message ===> ", response.choices[0].message)
+    print(
+        "API response.choices[0].message['role'] ===> ",
+        response.choices[0].message["role"],
+    )
+    print(
+        "API response.choices[0].message['content'] ===> ",
+        response.choices[0].message["content"],
+    )
 
     conversation.append(
         Message(
@@ -88,25 +104,19 @@ def main():
         },
     ]
 
-    finish_reason = None
-    index = 0
-    while finish_reason != "stop":
+    # Allow max 3 api calls
+    for index in range(3):
         print(f"GENERATING CHAT --- index:{index}")
-
-        if index >= 3:
-            raise Exception("Too many iterations")
-
-        index += 1
         conversation, finish_reason = generate_chat(conversation)
+
+        if finish_reason == "stop":
+            break
 
     file_code_pairs: list[tuple[str, str, str]] = []
     for message in conversation:
-        # only parse assistant messages
         if message["role"] != "assistant":
             continue
         file_code_pairs.extend(parse_response(message["content"].strip()))
-
-    print(f"Parsed file code pairs: {file_code_pairs}")
 
     for current_folder, current_file, code in file_code_pairs:
         save_code_to_file(

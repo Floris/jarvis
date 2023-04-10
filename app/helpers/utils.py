@@ -38,6 +38,7 @@ def save_code_to_file(code: str, file_path: str, file: str) -> None:
     Args:
         code (str): The generated code.
         file_path (str): The path to the file where the code should be saved.
+        file (str): The name of the file where the code should be saved.
 
     Returns:
         None
