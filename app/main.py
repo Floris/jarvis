@@ -11,6 +11,15 @@ openai.api_key = settings.api_key
 
 
 def main():
+    """
+    Asks a series of questions to gather information, generates a prompt based on the answers.
+
+    Submits the prompt to the OpenAI API.
+    Uses the API's response to generate a chat.
+
+    Parses the chat response to get the code.
+    Saves the generated code in the /generated/{project} folder.
+    """
     app = QuestionApp()
     app.ask_questions()
 
