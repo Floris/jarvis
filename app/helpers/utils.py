@@ -33,7 +33,7 @@ def remove_whitespace(s):
 
 def save_code_to_file(code: str, file_path: str, file: str) -> None:
     """
-    Save the generated code into the specified file.
+    Save the generated code into the specified file. Always saves to the generated folder.
 
     Args:
         code (str): The generated code.
