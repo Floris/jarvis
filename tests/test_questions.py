@@ -11,18 +11,19 @@ def test_ask_questions():
 
     # Set the return values of the mocked input function
     input_side_effect = [
-        "Test Project",
-        "A test project for demonstration purposes.",
-        "Demonstrate how the project works.",
-        "Python",
-        "pytest",
-        "pip",
-        "no",
-        "src, tests",
-        "yes",
-        "yes",
-        "MIT",
-        "",
+        "Test Project",  # project_name
+        "A test project for demonstration purposes.",  # project_description
+        "Demonstrate how the project works.",  # technical_description
+        "Python",  # programming_languages
+        "pytest",  # dependencies
+        "pip",  # package_manager
+        "requirements.txt",  # package_manager_file
+        "no",  # project_structure
+        "src, tests",  # describe_project_structure
+        "yes",  # usage_instructions
+        "yes",  # test_instructions
+        "MIT",  # license
+        "",  # notes
     ]
 
     # Create an instance of the QuestionApp
@@ -60,12 +61,21 @@ def test_ask_questions():
     )
 
     assert app.answers["dependencies"]["answer"] == "pytest"
-    assert app.answers["dependencies"]["question"] == "What dependencies will be used?"
+    assert (
+        app.answers["dependencies"]["question"]
+        == "What packages/ dependencies will be used?"
+    )
 
     assert app.answers["package_manager"]["answer"] == "pip"
     assert (
         app.answers["package_manager"]["question"]
         == "What package manager will be used? (pip, npm, etc.)"
+    )
+
+    assert app.answers["package_manager_file"]["answer"] == "requirements.txt"
+    assert (
+        app.answers["package_manager_file"]["question"]
+        == "What is the filename of the package manager file? (requirements.txt, package.json, etc.)"
     )
 
     assert app.answers["project_structure"]["answer"] == "no"

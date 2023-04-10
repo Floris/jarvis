@@ -92,15 +92,21 @@ QUESTIONS: list[QuestionDict] = [
     },
     {
         "id": "dependencies",
-        "question": "What dependencies will be used?",
+        "question": "What packages/ dependencies will be used?",
         "optional": True,
         "depends_on": None,
     },
     {
         "id": "package_manager",
         "question": "What package manager will be used? (pip, npm, etc.)",
-        "optional": False,
+        "optional": True,
         "depends_on": "dependencies",
+    },
+    {
+        "id": "package_manager_file",
+        "question": "What is the filename of the package manager file? (requirements.txt, package.json, etc.)",
+        "optional": False,
+        "depends_on": "package_manager",
     },
     {
         "id": "project_structure",
