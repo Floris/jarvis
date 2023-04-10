@@ -1,40 +1,14 @@
-from typing import Literal, TypedDict
+from typing import Literal
 
 import openai
 from helpers.processor import parse_response
 from helpers.utils import remove_whitespace, save_code_to_file
-from prompts.prompts import PROMPT
-from pydantic import BaseModel
+from questions import QuestionApp
+from schemas import ApiResponse, Message
 
 from settings import settings
 
 openai.api_key = settings.api_key
-
-
-class Message(TypedDict):
-    role: Literal["system", "user", "assistant"]
-    content: str
-
-
-class Choice(BaseModel):
-    index: int
-    message: Message
-    finish_reason: Literal["length", "stop", "eos"]
-
-
-class Usage(BaseModel):
-    prompt_tokens: int
-    completion_tokens: int
-    total_tokens: int
-
-
-class ApiResponse(BaseModel):
-    id: str
-    object: str
-    created: int
-    model: str
-    usage: Usage
-    choices: list[Choice]
 
 
 def generate_chat(
@@ -90,6 +64,12 @@ def generate_chat(
 
 
 def main():
+    app = QuestionApp()
+    app.ask_questions()
+
+    prompt = app.generate_prompt()
+    print("PROMPT: ", prompt)
+
     conversation: list[Message] = [
         {
             "role": "system",
@@ -100,7 +80,7 @@ def main():
         },
         {
             "role": "user",
-            "content": PROMPT,
+            "content": prompt,
         },
     ]
 
@@ -114,6 +94,7 @@ def main():
 
     file_code_pairs: list[tuple[str, str, str]] = []
     for message in conversation:
+        # we only care about the assistant's responses
         if message["role"] != "assistant":
             continue
         file_code_pairs.extend(parse_response(message["content"].strip()))
