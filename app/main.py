@@ -11,9 +11,21 @@ openai.api_key = settings.api_key
 
 
 def main():
+    """
+    Asks a series of questions to gather information, generates a prompt based on the answers.
+
+    Submits the prompt to the OpenAI API.
+    Uses the API's response to generate a chat.
+
+    Parses the chat response to get the code.
+    Saves the generated code in the /generated/{project} folder.
+    """
+
+    # Start
     app = QuestionApp()
     app.ask_questions()
 
+    # Generate the prompt based on the answers
     prompt = app.generate_prompt()
     print("PROMPT: ", prompt)
 
@@ -31,7 +43,7 @@ def main():
         },
     ]
 
-    # Allow max 3 api calls
+    # Chat with openai, allow max 3 api calls
     for index in range(3):
         print(f"GENERATING CHAT --- index:{index}")
         conversation, finish_reason = generate_chat(conversation)
@@ -39,6 +51,7 @@ def main():
         if finish_reason == "stop":
             break
 
+    # Parse the chat response to get the code
     file_code_pairs: list[tuple[str, str, str]] = []
     for message in conversation:
         # we only care about the assistant's responses
@@ -46,6 +59,7 @@ def main():
             continue
         file_code_pairs.extend(parse_response(message["content"].strip()))
 
+    # Save the generated code
     for current_folder, current_file, code in file_code_pairs:
         save_code_to_file(
             code,
