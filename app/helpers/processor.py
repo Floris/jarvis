@@ -26,9 +26,6 @@ def parse_response(response: str) -> list[tuple[str, str, str]]:
             continue
 
         elif "File:" in line:
-            line = remove_whitespace(line)
-            print("line ===> ", line)  # TODO: remove later
-
             if parsing_code:
                 # Add the previous file's code to the file_code_pairs list
                 file_code_pairs.append(
