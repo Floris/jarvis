@@ -17,6 +17,7 @@ def test_ask_questions():
         "Python",
         "pytest",
         "pip",
+        "no",
         "src, tests",
         "yes",
         "yes",
@@ -31,19 +32,69 @@ def test_ask_questions():
         app.ask_questions()
 
     # Check that the answers dictionary is populated correctly
-    assert app.answers["project_name"] == "Test Project"
+    assert app.answers["project_name"]["answer"] == "Test Project"
+    assert app.answers["project_name"]["question"] == "Project name?"
+
     assert (
-        app.answers["project_description"]
+        app.answers["project_description"]["answer"]
         == "A test project for demonstration purposes."
     )
-    assert app.answers["technical_description"] == "Demonstrate how the project works."
-    assert app.answers["programming_languages"] == "Python"
-    assert app.answers["dependencies"] == "pytest"
-    assert app.answers["package_manager"] == "pip"
-    assert app.answers["project_structure"] == "src, tests"
-    assert app.answers["usage_instructions"] == "yes"
-    assert app.answers["test_instructions"] == "yes"
-    assert app.answers["license"] == "MIT"
+    assert (
+        app.answers["project_description"]["question"]
+        == "Please provide a description of the project."
+    )
+
+    assert (
+        app.answers["technical_description"]["answer"]
+        == "Demonstrate how the project works."
+    )
+    assert (
+        app.answers["technical_description"]["question"]
+        == "Describe the technical aspects of the project."
+    )
+
+    assert app.answers["programming_languages"]["answer"] == "Python"
+    assert (
+        app.answers["programming_languages"]["question"]
+        == "What programming languages will be used?"
+    )
+
+    assert app.answers["dependencies"]["answer"] == "pytest"
+    assert app.answers["dependencies"]["question"] == "What dependencies will be used?"
+
+    assert app.answers["package_manager"]["answer"] == "pip"
+    assert (
+        app.answers["package_manager"]["question"]
+        == "What package manager will be used? (pip, npm, etc.)"
+    )
+
+    assert app.answers["project_structure"]["answer"] == "no"
+    assert (
+        app.answers["project_structure"]["question"]
+        == "Do you want us to provide the project structure?"
+    )
+
+    assert app.answers["describe_project_structure"]["answer"] == "src, tests"
+    assert (
+        app.answers["describe_project_structure"]["question"]
+        == "Describe the project structure."
+    )
+
+    assert app.answers["usage_instructions"]["answer"] == "yes"
+    assert (
+        app.answers["usage_instructions"]["question"]
+        == "Do you want us to provide usage instructions for the project."
+    )
+
+    assert app.answers["test_instructions"]["answer"] == "yes"
+    assert (
+        app.answers["test_instructions"]["question"]
+        == "Do you want us to provide test instructions for the project."
+    )
+
+    assert app.answers["license"]["answer"] == "MIT"
+    assert app.answers["license"]["question"] == "Specify the license for the project."
+
     assert "notes" not in app.answers
 
 
