@@ -24,17 +24,13 @@ This will start the script and allow you to generate code for your projects.
 
 ## API Key
 
-To use Jarvis, you need to have an OpenAI API key. Please create a `settings.py` file in the root directory of the project and add the following code:
+To use Jarvis, you need to have an OpenAI API key. Please create a `settings.py` file in the app/settings directory of the project and add the following code:
 
 ```settings.py
 api_key = "YOUR_API_KEY"
 ```
 
 Replace YOUR_API_KEY with your actual API key.
-
-## Contributing
-
-Contributions to Jarvis are welcome and encouraged! If you would like to contribute, please follow the guidelines outlined in CONTRIBUTING.md.
 
 ## License
 

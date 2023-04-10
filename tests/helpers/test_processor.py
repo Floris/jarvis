@@ -15,7 +15,7 @@ def test_parse_response():
     // File: app/__init__.py
     from .main import main
 
-    # File: tests/test_main.py
+    ------- File: tests/test_main.py
     from app.main import main
 
     def test_main():

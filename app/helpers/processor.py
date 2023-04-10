@@ -1,4 +1,8 @@
-from helpers.utils import parse_str, remove_code_block, remove_whitespace
+import re
+
+from helpers.utils import remove_code_block, remove_whitespace
+
+file_pattern = re.compile(r".*File:")
 
 
 def parse_response(response: str) -> list[tuple[str, str, str]]:
@@ -21,12 +25,7 @@ def parse_response(response: str) -> list[tuple[str, str, str]]:
         if "The project structure should look like this:" in line:
             continue
 
-        elif (
-            line.startswith("File:")
-            or line.startswith("// File:")
-            or line.startswith("# File:")
-            or "File:" in line
-        ):
+        elif "File:" in line:
             line = remove_whitespace(line)
             print("line ===> ", line)  # TODO: remove later
 
@@ -38,24 +37,12 @@ def parse_response(response: str) -> list[tuple[str, str, str]]:
                 current_code = []
 
             parsing_code = True
-
-            # TODO: change for just clear the line to blank
-            if line.startswith("# File:"):
-                file_path = parse_str(line, "# File:")
-            elif line.startswith("// File:"):
-                file_path = parse_str(line, "// File:")
-            elif line.startswith("#File:"):
-                file_path = parse_str(line, "#File:")
-            elif line.startswith("//File:"):
-                file_path = parse_str(line, "//File:")
-            elif line.startswith("File:"):
-                file_path = parse_str(line, "File:")
-            else:
-                raise ValueError("Invalid line")
+            file_path = remove_whitespace(file_pattern.sub("", line))
 
             current_folder, current_file = (
                 file_path.rsplit("/", 1) if "/" in file_path else ("", file_path)
             )
+
         elif parsing_code and line.strip():
             if "Done:" in line:
                 # Add the previous file's code to the file_code_pairs list
