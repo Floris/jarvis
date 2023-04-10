@@ -31,9 +31,9 @@ Prompt will then generate a project. Which will be saved in this folder:
 
 ## API Key
 
-To use Jarvis, you need an OpenAI API key. To set up your API key, create a settings.py file in the app/settings directory of the project and add the following code:
+To use Jarvis, you need an OpenAI API key. To set up your API key, create a `settings.py` file in the `app/settings` directory of the project and add the following code:
 
-```settings.py
+```
 api_key = "YOUR_API_KEY"
 ```
 
