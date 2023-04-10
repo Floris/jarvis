@@ -3,27 +3,27 @@ from typing import Literal, TypedDict
 from pydantic import BaseModel
 
 
-class Message(TypedDict):
+class MessageDict(TypedDict):
     role: Literal["system", "user", "assistant"]
     content: str
 
 
-class Choice(BaseModel):
+class ChoiceSchema(BaseModel):
     index: int
-    message: Message
+    message: MessageDict
     finish_reason: Literal["length", "stop", "eos"]
 
 
-class Usage(BaseModel):
+class UsageSchema(BaseModel):
     prompt_tokens: int
     completion_tokens: int
     total_tokens: int
 
 
-class ApiResponse(BaseModel):
+class ApiResponseSchema(BaseModel):
     id: str
     object: str
     created: int
     model: str
-    usage: Usage
-    choices: list[Choice]
+    usage: UsageSchema
+    choices: list[ChoiceSchema]

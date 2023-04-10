@@ -4,7 +4,7 @@ import openai
 from helpers.processor import parse_response
 from helpers.utils import remove_whitespace, save_code_to_file
 from questions import QuestionApp
-from schemas import ApiResponse, Message
+from schemas import ApiResponseSchema, MessageDict
 
 from settings import settings
 
@@ -12,25 +12,25 @@ openai.api_key = settings.api_key
 
 
 def generate_chat(
-    conversation: list[Message],
+    conversation: list[MessageDict],
     model: str = "gpt-3.5-turbo",
     temperature: float = 0.5,
     stop: str | list[str] | None = None,
-) -> tuple[list[Message], Literal["length", "stop", "eos"]]:
+) -> tuple[list[MessageDict], Literal["length", "stop", "eos"]]:
     """
     Generate a chat response from the OpenAI API.
 
     Args:
-        conversation (List[Message]): A list of Message dictionaries representing the conversation so far.
+        conversation (List[MessageDict]): A list of Message dictionaries representing the conversation so far.
         model (str, optional): The OpenAI model to use for the chat. Defaults to "gpt-3.5-turbo".
         temperature (float, optional): Controls randomness in the generated response. Defaults to 0.5.
         stop (Union[str, List[str], None], optional): Token(s) that indicate the end of the generated response. Defaults to None.
 
     Returns:
-        tuple[List[Message], Literal["length", "stop", "eos"]]: Updated conversation list and the reason the conversation finished.
+        tuple[List[MessageDict], Literal["length", "stop", "eos"]]: Updated conversation list and the reason the conversation finished.
     """
 
-    response = ApiResponse.parse_obj(
+    response = ApiResponseSchema.parse_obj(
         openai.ChatCompletion.create(
             model=model,
             messages=conversation,
@@ -54,7 +54,7 @@ def generate_chat(
     )
 
     conversation.append(
-        Message(
+        MessageDict(
             role=response.choices[0].message["role"],
             content=response.choices[0].message["content"],
         )
@@ -70,7 +70,7 @@ def main():
     prompt = app.generate_prompt()
     print("PROMPT: ", prompt)
 
-    conversation: list[Message] = [
+    conversation: list[MessageDict] = [
         {
             "role": "system",
             "content": """
