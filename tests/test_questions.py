@@ -18,10 +18,8 @@ def test_ask_questions():
         "pytest",  # dependencies
         "pip",  # package_manager
         "requirements.txt",  # package_manager_file
-        "no",  # project_structure
-        "src, tests",  # describe_project_structure
-        "yes",  # usage_instructions
         "yes",  # test_instructions
+        "pytest",  # test_instructions_package
         "MIT",  # license
         "",  # notes
     ]
@@ -78,28 +76,16 @@ def test_ask_questions():
         == "What is the filename of the package manager file? (requirements.txt, package.json, etc.)"
     )
 
-    assert app.answers["project_structure"]["answer"] == "no"
-    assert (
-        app.answers["project_structure"]["question"]
-        == "Do you want us to provide the project structure?"
-    )
-
-    assert app.answers["describe_project_structure"]["answer"] == "src, tests"
-    assert (
-        app.answers["describe_project_structure"]["question"]
-        == "Describe the project structure."
-    )
-
-    assert app.answers["usage_instructions"]["answer"] == "yes"
-    assert (
-        app.answers["usage_instructions"]["question"]
-        == "Do you want us to provide usage instructions for the project."
-    )
-
     assert app.answers["test_instructions"]["answer"] == "yes"
     assert (
         app.answers["test_instructions"]["question"]
-        == "Do you want us to provide test instructions for the project."
+        == "Do you want unit tests for the project?"
+    )
+
+    assert app.answers["test_instructions_package"]["answer"] == "pytest"
+    assert (
+        app.answers["test_instructions_package"]["question"]
+        == "What package will be used for unit testing? (pytest, unittest, etc.)"
     )
 
     assert app.answers["license"]["answer"] == "MIT"

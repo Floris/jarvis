@@ -12,21 +12,36 @@ poetry install
 
 This will install all the necessary dependencies for the project.
 
-## Usage
+## How to Use
 
-To run Jarvis, execute the following command:
+Choose between utilizing a predefined prompt from `prompts/prompt.txt` or creating a custom prompt by answering a set of questions.
 
-```
-python main.py
-```
-
-This will start the script that asks a series of questions to gather information.
-Once all the questions are answered, the application generates a prompt based on the answers and additional instructions.
-
-Prompt will then generate a project. Which will be saved in this folder:
+To initiate Jarvis, run the command below:
 
 ```
-/generated/{project}
+python app/javis.py
+```
+
+The script will then ask a series of questions to collect necessary information. Once completed, it will create a prompt based on the responses and any additional guidance provided.
+
+The generated prompt will be used to create the project structure using OpenAI's GPT-3.5-turbo model.
+
+If you need to give feedback, you can do so; otherwise, execute the following command:
+
+```
+create_code
+```
+
+The code will be generated in the specified directory:
+
+```
+/generated/{project_title}
+```
+
+To terminate the script, enter the command:
+
+```
+exit
 ```
 
 ## API Key

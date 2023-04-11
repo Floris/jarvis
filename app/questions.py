@@ -1,3 +1,4 @@
+import os
 from typing import TypedDict
 
 
@@ -13,6 +14,31 @@ class AnswerDict(TypedDict):
     answer: str
 
 
+def use_prompt_from_file(
+    file: str = f"{os.path.abspath(os.path.join(os.getcwd()))}/prompts/prompt.txt",
+) -> str | None:
+    """
+    Asks the user if they want to use the prompt from the prompts/prompts.txt file.
+
+    Args:
+        file str: The path to the file containing the prompt.
+
+    Returns:
+        str | None: The prompt from the file or None if the user doesn't want to use the prompt from the file.
+    """
+
+    use_prompt_from_file = None
+
+    while use_prompt_from_file not in ["y", "n"]:
+        use_prompt_from_file = input("Use prompt from file? (y/n): ").lower()
+
+    if use_prompt_from_file == "n":
+        return None
+
+    with open(file) as f:
+        return f.read()
+
+
 class QuestionApp:
     """Class for asking questions and generating a prompt"""
 
@@ -20,7 +46,14 @@ class QuestionApp:
         self.questions: list[QuestionDict] = QUESTIONS
         self.answers: dict[str, AnswerDict] = {}
 
-    def ask_questions(self):
+    def ask_questions(self) -> None:
+        """
+        Asks the user if they want to use the prompt from the prompts/prompts.txt file.
+
+        Returns:
+            None
+        """
+
         for question_dict in self.questions:
             question = question_dict["question"]
             optional = question_dict["optional"]
@@ -48,7 +81,12 @@ class QuestionApp:
                 )
 
     def generate_prompt(self) -> str:
-        """Generate a prompt based on the answers"""
+        """
+        Generate a prompt based on the answers
+
+        Returns:
+            str: Generated prompt from the answers
+        """
 
         prompt = "\n\n"
 
@@ -57,11 +95,9 @@ class QuestionApp:
             prompt += f"* {self.answers[question_id]['question'].capitalize().replace('_', ' ')}\n{self.answers[question_id]['answer']}\n\n"
 
         # Add additional instructions to the prompt
-        prompt += "* Notes\n"
-        prompt += (
-            "Make sure to generate code for all the files in the project structure.\n"
-        )
-        prompt += "Please use 'File: {Project Name}/{path}/{filename}' as a tag for the file before the code block. And 'Done: {Project Name}/{path}/{filename}' as a tag for the file after the code block.\n"
+        prompt += "Define the structure of the whole project\n"
+        prompt += "Try to combine files if possible, this is for efficiency\n"
+
         return prompt.strip()
 
 
@@ -109,28 +145,16 @@ QUESTIONS: list[QuestionDict] = [
         "depends_on": "package_manager",
     },
     {
-        "id": "project_structure",
-        "question": "Do you want us to provide the project structure?",
-        "optional": False,
-        "depends_on": None,
-    },
-    {
-        "id": "describe_project_structure",
-        "question": "Describe the project structure.",
-        "optional": True,
-        "depends_on": "project_structure",
-    },
-    {
-        "id": "usage_instructions",
-        "question": "Do you want us to provide usage instructions for the project.",
-        "optional": True,
-        "depends_on": None,
-    },
-    {
         "id": "test_instructions",
-        "question": "Do you want us to provide test instructions for the project.",
+        "question": "Do you want unit tests for the project?",
         "optional": True,
         "depends_on": None,
+    },
+    {
+        "id": "test_instructions_package",
+        "question": "What package will be used for unit testing? (pytest, unittest, etc.)",
+        "optional": True,
+        "depends_on": "test_instructions",
     },
     {
         "id": "license",
