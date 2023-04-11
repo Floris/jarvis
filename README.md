@@ -12,12 +12,6 @@ poetry install
 
 This will install all the necessary dependencies for the project.
 
-## Description
-
-Jarvis can be used to create/ set up projects (or functions) from scratch.
-
-Note:
-
 ## How to Use
 
 Choose between utilizing a predefined prompt from `prompts/prompt.txt` or creating a custom prompt by answering a set of questions.
