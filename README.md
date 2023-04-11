@@ -34,7 +34,7 @@ This prompt is used to generate the project structure through OpenAI's GPT-3.5-t
 You get the ability to provide feedback if needed, if not use the command:
 
 ```
-generate_code
+create_code
 ```
 
 This will then generate the code in the designated folder:
