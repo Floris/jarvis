@@ -33,7 +33,7 @@ def main():
             "role": "system",
             "content": """
             You are a world class software developer.
-            You will design project structure based on the Project Structure defined.
+            You will design project structure based on the information provided.
             """.strip(),
         },
         {
