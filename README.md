@@ -12,6 +12,12 @@ poetry install
 
 This will install all the necessary dependencies for the project.
 
+## Description
+
+Jarvis can be used to create/ set up projects from scratch. Or just functions.
+
+Note:
+
 ## Usage
 
 To run Jarvis, execute the following command:
@@ -23,10 +29,24 @@ python main.py
 This will start the script that asks a series of questions to gather information.
 Once all the questions are answered, the application generates a prompt based on the answers and additional instructions.
 
-Prompt will then generate a project. Which will be saved in this folder:
+This prompt is used to generate the project structure through OpenAI's GPT-3.5-turbo model.
+
+You get the ability to provide feedback if needed, if not use the command:
 
 ```
-/generated/{project}
+generate_code
+```
+
+This will then generate the code in the designated folder:
+
+```
+/generated/{project_title}
+```
+
+To exit the script use the command:
+
+```
+exit
 ```
 
 ## API Key

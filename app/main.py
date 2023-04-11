@@ -1,8 +1,7 @@
 import openai
-from chat import generate_chat
-from helpers.processor import parse_response
-from helpers.utils import remove_whitespace, save_code_to_file
-from questions import QuestionApp
+from chat import generate_chat, handle_incoming_message
+from helpers.processor import process_input
+from questions import QuestionApp, use_prompt_from_file
 from schemas import MessageDict
 
 from settings import settings
@@ -14,58 +13,47 @@ def main():
     """
     Asks a series of questions to gather information, generates a prompt based on the answers.
 
-    Submits the prompt to the OpenAI API.
-    Uses the API's response to generate a chat.
-
-    Parses the chat response to get the code.
-    Saves the generated code in the /generated/{project} folder.
+    Commands:
+        - create_code: Generates code for all the files in the project structure.
+        - exit: Exits the chat.
     """
 
     # Start
-    app = QuestionApp()
-    app.ask_questions()
+    initial_prompt = use_prompt_from_file()
 
-    # Generate the prompt based on the answers
-    prompt = app.generate_prompt()
-    print("PROMPT: ", prompt)
+    if initial_prompt is None:
+        app = QuestionApp()
+        app.ask_questions()
+
+        # Generate the prompt based on the answers
+        initial_prompt = app.generate_prompt()
 
     conversation: list[MessageDict] = [
         {
             "role": "system",
             "content": """
-            You are a coding assistant that generates code + project structure based on the Project Structure defined.
-            You utilize best practices and are a great resource for developers.
+            You are a world class software developer.
+            You will design project structure based on the Project Structure defined.
             """.strip(),
         },
         {
             "role": "user",
-            "content": prompt,
+            "content": initial_prompt.strip(),
         },
     ]
 
-    # Chat with openai, allow max 3 api calls
-    for index in range(3):
-        print(f"GENERATING CHAT --- index:{index}")
-        conversation, finish_reason = generate_chat(conversation)
+    while True:
+        print("processing...")
 
-        if finish_reason == "stop":
-            break
+        conversation, _ = generate_chat(conversation, temperature=0.8)
+        incoming_message = conversation[-1]["content"].strip()
 
-    # Parse the chat response to get the code
-    file_code_pairs: list[tuple[str, str, str]] = []
-    for message in conversation:
-        # we only care about the assistant's responses
-        if message["role"] != "assistant":
-            continue
-        file_code_pairs.extend(parse_response(message["content"].strip()))
+        handle_incoming_message(incoming_message)
 
-    # Save the generated code
-    for current_folder, current_file, code in file_code_pairs:
-        save_code_to_file(
-            code,
-            remove_whitespace(current_folder),
-            remove_whitespace(current_file),
-        )
+        # Get the user input
+        answer = input(f"{incoming_message}: ")
+
+        conversation = process_input(answer, conversation)
 
 
 if __name__ == "__main__":
