@@ -14,36 +14,37 @@ This will install all the necessary dependencies for the project.
 
 ## Description
 
-Jarvis can be used to create/ set up projects from scratch. Or just functions.
+Jarvis can be used to create/ set up projects (or functions) from scratch.
 
 Note:
 
-## Usage
+## How to Use
 
-To run Jarvis, execute the following command:
+Choose between utilizing a predefined prompt from prompts/prompt.txt or creating a custom prompt by answering a set of questions.
+
+To initiate Jarvis, run the command below:
 
 ```
-python main.py
+python app/javis.py
 ```
 
-This will start the script that asks a series of questions to gather information.
-Once all the questions are answered, the application generates a prompt based on the answers and additional instructions.
+The script will then ask a series of questions to collect necessary information. Once completed, it will create a prompt based on the responses and any additional guidance provided.
 
-This prompt is used to generate the project structure through OpenAI's GPT-3.5-turbo model.
+The generated prompt will be used to create the project structure using OpenAI's GPT-3.5-turbo model.
 
-You get the ability to provide feedback if needed, if not use the command:
+If you need to give feedback, you can do so; otherwise, execute the following command:
 
 ```
 create_code
 ```
 
-This will then generate the code in the designated folder:
+The code will be generated in the specified directory:
 
 ```
 /generated/{project_title}
 ```
 
-To exit the script use the command:
+To terminate the script, enter the command:
 
 ```
 exit
