@@ -9,4 +9,4 @@ __pycache__
 .idea
 .idea/
 .pytest_cache
-/app/prompts/prompt.txt
+prompts/prompt.txt

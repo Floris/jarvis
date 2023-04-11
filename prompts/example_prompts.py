@@ -122,7 +122,7 @@ Please use 'File: {Project Name}/{path}/{filename}' as a tag for the file before
 """
 
 
-PROMPT_API_CLIENT = """ 
+PROMPT_API_CLIENT = """
 * Project name?
 generic api client
 

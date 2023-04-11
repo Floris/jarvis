@@ -1,3 +1,4 @@
+import os
 from typing import TypedDict
 
 
@@ -13,7 +14,9 @@ class AnswerDict(TypedDict):
     answer: str
 
 
-def use_prompt_from_file(file: str = "app/prompts/prompt.txt") -> str | None:
+def use_prompt_from_file(
+    file: str = f"{os.path.abspath(os.path.join(os.getcwd()))}/prompts/prompt.txt",
+) -> str | None:
     """
     Asks the user if they want to use the prompt from the prompts/prompts.txt file.
 
