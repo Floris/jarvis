@@ -23,17 +23,14 @@ def parse_response(response: str) -> list[tuple[str, str, str]]:
     current_code: list[str] = []
     parsing_code = False
 
-    for line in response.splitlines():
-        if "The project structure should look like this:" in line:
-            continue
+    def add_current_code():
+        file_code_pairs.append((current_folder, current_file, "\n".join(current_code)))
+        current_code.clear()
 
-        elif "File:" in line:
+    for line in response.splitlines():
+        if "File:" in line:
             if parsing_code:
-                # Add the previous file's code to the file_code_pairs list
-                file_code_pairs.append(
-                    (current_folder, current_file, "\n".join(current_code))
-                )
-                current_code = []
+                add_current_code()
 
             parsing_code = True
             file_path = remove_whitespace(file_pattern.sub("", line))
@@ -43,19 +40,15 @@ def parse_response(response: str) -> list[tuple[str, str, str]]:
             )
 
         elif parsing_code and line.strip():
-            if "Done:" in line:
-                # Add the previous file's code to the file_code_pairs list
-                file_code_pairs.append(
-                    (current_folder, current_file, "\n".join(current_code))
-                )
-                current_code = []
-                parsing_code = False
-            else:
+            if "Done:" not in line:
                 current_code.append(remove_code_block(line))
+                continue
 
-    # Add the last file's code to the file_code_pairs list
+            add_current_code()
+            parsing_code = False
+
     if parsing_code:
-        file_code_pairs.append((current_folder, current_file, "\n".join(current_code)))
+        add_current_code()
 
     return file_code_pairs
 
