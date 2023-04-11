@@ -20,7 +20,7 @@ Note:
 
 ## How to Use
 
-Choose between utilizing a predefined prompt from prompts/prompt.txt or creating a custom prompt by answering a set of questions.
+Choose between utilizing a predefined prompt from `prompts/prompt.txt` or creating a custom prompt by answering a set of questions.
 
 To initiate Jarvis, run the command below:
 
