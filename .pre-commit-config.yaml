@@ -1,4 +1,4 @@
-exclude: "^docs/|/migrations/|/prompts/"
+exclude: "^prompts/"
 default_stages: [commit, push]
 
 repos:
@@ -36,6 +36,7 @@ repos:
     rev: v1.2.0
     hooks:
       - id: mypy
+        args: ["app/"]
 
 # sets up .pre-commit-ci.yaml to ensure pre-commit dependencies stay up to date
 ci:
