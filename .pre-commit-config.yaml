@@ -36,6 +36,7 @@ repos:
     rev: v1.2.0
     hooks:
       - id: mypy
+        files: ^app/.*\.py$
         args: ["--exclude=^prompts/|.*tests/.*|.*test_.*/.*"]
 
 # sets up .pre-commit-ci.yaml to ensure pre-commit dependencies stay up to date
