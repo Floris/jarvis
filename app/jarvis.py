@@ -9,7 +9,7 @@ from settings import settings
 openai.api_key = settings.api_key
 
 
-def main():
+def main() -> None:
     """
     Asks a series of questions to gather information, generates a prompt based on the answers.
 

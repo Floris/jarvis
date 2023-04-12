@@ -17,6 +17,14 @@ def append_generate_code(conversation: list[MessageDict]) -> list[MessageDict]:
     return conversation
 
 
-chat_commands: dict[str, Callable] = {
+def quit_chat(conversation: list[MessageDict]) -> list[MessageDict]:
+    exit("User exited the chat.")
+
+
+chat_commands: dict[str, Callable[[list[MessageDict]], list[MessageDict]]] = {
     "create_code": append_generate_code,
+    "exit": quit_chat,
+    "exit()": quit_chat,
+    "quit": quit_chat,
+    "quit()": quit_chat,
 }

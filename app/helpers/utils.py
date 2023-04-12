@@ -14,7 +14,7 @@ def remove_code_block(s: str) -> str:
     return "" if "```" in s else s
 
 
-def remove_whitespace(s):
+def remove_whitespace(s: str) -> str:
     """
     Removes all whitespace characters from a string.
 
@@ -43,7 +43,7 @@ def save_code_to_file(code: str, file_path: str, file: str) -> None:
     # This sets the base path to the root of the project.
     base_path = f"{os.path.abspath(os.path.join(os.getcwd()))}/generated"
 
-    def from_base_path_create_folder(folder_name):
+    def from_base_path_create_folder(folder_name: str) -> str:
         folder = os.path.join(base_path, folder_name)
         if not os.path.exists(folder):
             print(f"Creating folder: {folder}")
