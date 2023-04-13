@@ -23,7 +23,7 @@ def parse_response(response: str) -> list[tuple[str, str, str]]:
     current_code: list[str] = []
     parsing_code = False
 
-    def add_current_code():
+    def add_current_code() -> None:
         file_code_pairs.append((current_folder, current_file, "\n".join(current_code)))
         current_code.clear()
 
@@ -64,9 +64,6 @@ def process_input(answer: str, conversation: list[MessageDict]) -> list[MessageD
     Returns:
         list[MessageDict]: The updated conversation.
     """
-
-    if answer in {"exit", "quit", "stop", "done"}:
-        exit(code="User exited the chat.")
 
     # Append the command's response to the conversation list
     if answer in chat_commands.keys():

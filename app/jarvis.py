@@ -9,7 +9,7 @@ from settings import settings
 openai.api_key = settings.api_key
 
 
-def main():
+def main() -> None:
     """
     Asks a series of questions to gather information, generates a prompt based on the answers.
 
@@ -45,7 +45,7 @@ def main():
     while True:
         print("processing...")
 
-        conversation, _ = generate_chat(conversation, temperature=0.8)
+        conversation, _ = generate_chat(conversation=conversation, temperature=0.8)
         incoming_message = conversation[-1]["content"].strip()
 
         handle_incoming_message(incoming_message)
