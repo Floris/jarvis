@@ -4,6 +4,16 @@ from schemas import MessageDict
 
 
 def append_generate_code(conversation: list[MessageDict]) -> list[MessageDict]:
+    """
+    Appends a message to the conversation list that requests to generate code for all the files in the project structure.
+
+    Args:
+        conversation (list[MessageDict]): A list of messages exchanged between users.
+
+    Returns:
+        list[MessageDict]: The updated conversation list with the appended message.
+    """
+
     conversation.append(
         {
             "role": "user",

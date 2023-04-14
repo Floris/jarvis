@@ -40,18 +40,18 @@ def use_prompt_from_file(
 
 
 class QuestionApp:
-    """Class for asking questions and generating a prompt"""
+    """Very simple class for asking questions and generating a prompt"""
 
     def __init__(self) -> None:
         self.questions: list[QuestionDict] = QUESTIONS
         self.answers: dict[str, AnswerDict] = {}
 
-    def ask_questions(self) -> None:
+    def ask_questions(self) -> str:
         """
         Asks the user if they want to use the prompt from the prompts/prompts.txt file.
 
         Returns:
-            None
+            str: Generated prompt from the answers
         """
 
         for question_dict in self.questions:
@@ -80,7 +80,9 @@ class QuestionApp:
                     question=question, answer=answer
                 )
 
-    def generate_prompt(self) -> str:
+        return self.__generate_prompt()
+
+    def __generate_prompt(self) -> str:
         """
         Generate a prompt based on the answers
 

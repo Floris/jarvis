@@ -67,8 +67,7 @@ def process_input(answer: str, conversation: list[MessageDict]) -> list[MessageD
 
     # Append the command's response to the conversation list
     if answer in chat_commands.keys():
-        conversation = chat_commands[answer](conversation)
-        return conversation
+        return chat_commands[answer](conversation)
 
     # Append the user's answer to the conversation list
     conversation.append(
