@@ -55,8 +55,6 @@ def save_code_to_file(code: str, file_path: str, file: str) -> None:
 
     file_path = os.path.join(base_path, file_path, file)
 
-    print(f"Saving code to file: {file_path}")  # TODO: remove later
-
     # append code to file, using append incase the file already exists
     with open(file_path, "a") as f:
         f.write(code)

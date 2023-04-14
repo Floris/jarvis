@@ -22,11 +22,8 @@ def main() -> None:
     initial_prompt = use_prompt_from_file()
 
     if initial_prompt is None:
-        app = QuestionApp()
-        app.ask_questions()
-
         # Generate the prompt based on the answers
-        initial_prompt = app.generate_prompt()
+        initial_prompt = QuestionApp().ask_questions()
 
     conversation: list[MessageDict] = [
         {

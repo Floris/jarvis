@@ -38,7 +38,6 @@ def generate_chat(
         )
     )
 
-    print("API response.object ===> ", response.object)
     print("API response.usage ===> ", response.usage)
 
     conversation.append(
