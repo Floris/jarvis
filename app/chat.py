@@ -1,13 +1,14 @@
+import logging
 from typing import Literal
 
 import openai
-from helpers.processor import parse_response
-from helpers.utils import remove_whitespace, save_code_to_file
 from schemas import ApiResponseSchema, MessageDict
 
 from settings import settings
 
 openai.api_key = settings.api_key
+
+logger = logging.getLogger()
 
 
 def generate_chat(
@@ -29,6 +30,11 @@ def generate_chat(
         tuple[List[MessageDict], Literal["length", "stop", "eos"]]: Updated conversation list and the reason the conversation finished.
     """
 
+    logger.debug("=====================================")
+    logger.debug("Prompt:")
+    logger.debug(conversation[-1]["content"])
+    logger.debug("=====================================")
+
     response = ApiResponseSchema.parse_obj(
         openai.ChatCompletion.create(
             model=model,
@@ -38,8 +44,8 @@ def generate_chat(
         )
     )
 
-    print("API response.object ===> ", response.object)
-    print("API response.usage ===> ", response.usage)
+    logger.info(("API response.usage ===> ", response.usage))
+    logger.debug(("API response content ===> ", response.choices[0].message["content"]))
 
     conversation.append(
         MessageDict(
@@ -49,26 +55,3 @@ def generate_chat(
     )
 
     return conversation, response.choices[0].finish_reason
-
-
-def handle_incoming_message(incoming_message: str) -> None:
-    """
-    Handles the incoming message from the OpenAI API.
-
-    Args:
-        incoming_message str: The incoming message from the OpenAI API.
-
-    Returns:
-        None
-    """
-
-    # Parse latest chat response to get the code
-    file_code_pairs = parse_response(incoming_message)
-
-    # Save the generated code
-    for current_folder, current_file, code in file_code_pairs:
-        save_code_to_file(
-            code,
-            remove_whitespace(current_folder),
-            remove_whitespace(current_file),
-        )
