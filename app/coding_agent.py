@@ -1,8 +1,8 @@
 import logging
 
 from agent import Agent
-from chat import generate_chat
 from file_helpers import read_file
+from helpers.chat import generate_chat
 from helpers.processor import parse_response
 from helpers.utils import remove_whitespace, save_code_to_file
 from schemas import MessageDict

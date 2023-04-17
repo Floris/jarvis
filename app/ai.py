@@ -3,9 +3,9 @@ import logging
 from typing import TypedDict
 
 from agent import Agent
-from chat import generate_chat
 from coding_agent import CodingAgent
 from file_helpers import append_to_file, read_file, write_to_file
+from helpers.chat import generate_chat
 from prompts.prompts import get_prompt
 from schemas import MessageDict
 
