@@ -1,5 +1,3 @@
-from typing import Any
-
 from agent.manager import delete_agent, list_agents, message_agent, start_agent
 from exceptions import ShutDown
 from helpers.chat import create_conversation_message
@@ -18,7 +16,7 @@ def append_generate_code(conversation: list[MessageDict]) -> list[MessageDict]:
     return conversation
 
 
-def handle_command(name: str, args: dict) -> Any:
+def handle_command(name: str, args: dict) -> str:
     """
     Handle the execution of a command based on its name and arguments.
 
