@@ -1,9 +1,9 @@
 import json
 import logging
-from typing import Any, Literal, TypedDict
+from typing import Any, TypedDict
 
 from agent.manager import delete_agent, list_agents, message_agent, start_agent
-from helpers.chat import generate_chat
+from helpers.chat import create_conversation_message, generate_chat
 from helpers.file_helpers import append_to_file, read_file, write_to_file
 from schemas import MessageDict
 
@@ -32,37 +32,42 @@ class ResponseDict(TypedDict):
     command: CommandDict
 
 
-def create_conversation_message(
-    role: Literal["system", "user"], content: str
-) -> MessageDict:
-    return {"role": role, "content": content}
-
-
 def generate_context(prompt: str, relevant_memory: str) -> list[MessageDict]:
-    context = [
+    """
+    Generate a context list of messages for the AI, including the prompt and relevant memory.
+
+    Args:
+        prompt (str): The prompt for the AI.
+        relevant_memory (str): Relevant memory for the AI to recall.
+
+    Returns:
+        list[MessageDict]: A list of messages to form the context.
+    """
+    return [
         create_conversation_message("system", prompt),
         create_conversation_message(
             "system",
             f"This reminds you of these events from your past:\n{relevant_memory}\n\n",
         ),
     ]
-    return context
-
-
-def execute_prompt(generated_prompt: str) -> str:
-    conversation: list[MessageDict] = [
-        {"role": "user", "content": generated_prompt},
-    ]
-    conversation, _ = generate_chat(conversation=conversation, temperature=0.0)
-    return conversation[-1]["content"]
 
 
 def handle_command(name: str, args: dict) -> Any:
+    """
+    Handle the execution of a command based on its name and arguments.
+
+    Args:
+        name (str): The name of the command.
+        args (dict): A dictionary of arguments for the command.
+
+    Returns:
+        Any: The result of the command execution.
+
+    Raises:
+        ShutDown: If the command is 'shutdown', raise the ShutDown exception.
+    """
     if name == "shutdown":
         raise ShutDown("Shutdown command received.")
-
-    elif name == "ask_ai_question":
-        response = f'- {execute_prompt(args["prompt"])}\n'
 
     elif name == "start_agent":
         return start_agent(args["name"], task=args["task"], prompt=args["prompt"])
@@ -106,6 +111,17 @@ def handle_command(name: str, args: dict) -> Any:
 
 
 class AI:
+    """
+    Initialize the AI instance.
+
+    Args:
+        name (str): The name of the AI.
+        next_action_count (int): The next action count.
+        prompt (str): The initial prompt for the AI.
+        user_input (str): The initial user input.
+        message_history (list[MessageDict], optional): The message history. Defaults to [].
+    """
+
     def __init__(
         self,
         name: str,
@@ -122,6 +138,12 @@ class AI:
         self.memory: list[str] = []
 
     def chat(self) -> ResponseDict:
+        """
+        Conduct a chat with the AI and return the response.
+
+        Returns:
+            ResponseDict: The AI-generated response.
+        """
         relevant_memory = (
             "" if len(self.message_history) == 0 else str(self.memory[-6:])
         )
@@ -143,7 +165,16 @@ class AI:
         return json.loads(conversation[-1]["content"])
 
     def start(self):
-        """Start AI loop"""
+        """
+        Start the AI loop, where the AI processes user input and returns responses.
+        This loop continues until the "shutdown" command is received.
+
+        In each iteration of the loop, the AI generates a response based on the user input
+        and the command associated with the response. If the command is "human_feedback",
+        the user provides feedback, otherwise, the AI executes the command and stores the
+        results in its memory.
+        """
+
         logger.info(f"Starting AI {self.name}...")
 
         while True:

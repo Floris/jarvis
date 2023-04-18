@@ -55,3 +55,19 @@ def generate_chat(
     )
 
     return conversation, response.choices[0].finish_reason
+
+
+def create_conversation_message(
+    role: Literal["system", "user"], content: str
+) -> MessageDict:
+    """
+    Create a conversation message dictionary.
+
+    Args:
+        role (Literal["system", "user"]): The role of the message sender.
+        content (str): The content of the message.
+
+    Returns:
+        MessageDict: The created message dictionary.
+    """
+    return {"role": role, "content": content}

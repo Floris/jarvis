@@ -2,10 +2,8 @@ from helpers.chat import generate_chat
 from helpers.utils import is_int
 from schemas import MessageDict
 
-from settings.settings import gpt_model
 
-
-def start_agent(name: str, task: str, prompt: str, model=gpt_model) -> str:
+def start_agent(name: str, task: str, prompt: str, model="gpt-3.5-turbo") -> str:
     """Start an agent with a given name, task, and prompt
     Args:
         name (str): The name of the agent
