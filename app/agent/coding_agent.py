@@ -9,6 +9,7 @@ from schemas import MessageDict
 logger = logging.getLogger()
 
 
+# NOTE: This will be integrated into the main agent class. Will be removed once the integration is complete.
 class CodingAgent:
     """
     Agent that generates code for a project structure.

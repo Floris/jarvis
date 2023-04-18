@@ -1,0 +1,2 @@
+class ShutDown(Exception):
+    pass
