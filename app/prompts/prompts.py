@@ -2,23 +2,24 @@ from prompts.prompt_generator import PromptGenerator
 
 commands = [
     (
-        "Start Coding Agent",
-        "start_coding_agent",
-        {
-            "name": "<name>",
-            "file": "<file>",
-            "reason": "<reason>",
-            "reflection": "<reflection_about_what_happened>",
-        },
+        "Start GPT Agent",
+        "start_agent",
+        {"name": "<name>", "task": "<short_task_desc>", "prompt": "<prompt>"},
     ),
     (
-        "Ask AI question",
-        "ask_ai_question",
-        {
-            "prompt": "<prompt>",
-            "reason": "<reason>",
-            "reflection": "<reflection_about_what_happened>",
-        },
+        "Message GPT Agent",
+        "message_agent",
+        {"key": "<key>", "message": "<message>"},
+    ),
+    (
+        "List GPT Agents",
+        "list_agents",
+        {},
+    ),
+    (
+        "Delete GPT Agent",
+        "delete_agent",
+        {"key": "<key>"},
     ),
     (
         "Write to file",
@@ -30,16 +31,6 @@ commands = [
             "reflection": "<reflection_about_what_happened>",
         },
     ),
-    # (
-    #     "Create file",
-    #     "create_file",
-    #     {
-    #         "file": "<file>",
-    #         "text": "<text_or_blank>",
-    #         "reason": "<reason>",
-    #         "reflection": "<reflection_about_what_happened>",
-    #     },
-    # ),
     (
         "Read file",
         "read_file",
@@ -52,6 +43,16 @@ commands = [
     (
         "Append to file",
         "append_to_file",
+        {
+            "file": "<file>",
+            "text": "<text>",
+            "reason": "<reason>",
+            "reflection": "<reflection_about_what_happened>",
+        },
+    ),
+    (
+        "Update file",
+        "update_file",
         {
             "file": "<file>",
             "text": "<text>",
@@ -77,23 +78,23 @@ commands = [
             "reflection": "<reflection_about_what_happened>",
         },
     ),
-    # (
-    #     "Execute Python File",
-    #     "execute_python_file",
-    #     {
-    #         "file": "<file>",
-    #         "reason": "<reason>",
-    #         "reflection": "<reflection_about_what_happened>",
-    #     },
-    # ),
-    # (
-    #     "Do Nothing",
-    #     "do_nothing",
-    #     {
-    #         "reason": "<reason>",
-    #         "reflection": "<reflection_about_what_happened>",
-    #     },
-    # ),
+    (
+        "Ask for help",
+        "human_feedback",
+        {
+            "question": "<text>",
+            "reason": "<reason>",
+            "reflection": "<reflection_about_what_happened>",
+        },
+    ),
+    (
+        "Do Nothing",
+        "do_nothing",
+        {
+            "reason": "<reason>",
+            "reflection": "<reflection_about_what_happened>",
+        },
+    ),
     (
         "Shutdown",
         "shutdown",
@@ -159,3 +160,22 @@ def get_prompt() -> str:
 
     # Generate the prompt string
     return prompt_generator.generate_prompt_string()
+
+
+def construct_prompt(name: str, role: str, goals: list[str]) -> str:
+    prompt_start = (
+        "Your decisions must always be made independently without"
+        " seeking user assistance. Play to your strengths as an LLM and pursue"
+        " simple strategies with no legal complications."
+        ""
+    )
+
+    # Construct full prompt
+    full_prompt = f"You are {name}, {role}\n{prompt_start}\n\nGOALS:\n\n"
+
+    # ai_goals
+    for i, goal in enumerate(goals):
+        full_prompt += f"{i+1}. {goal}\n"
+
+    full_prompt += f"\n\n{get_prompt()}"
+    return full_prompt

@@ -1,4 +1,3 @@
-""" A module for generating custom prompt strings."""
 import json
 from typing import Any, TypedDict
 
@@ -25,12 +24,8 @@ class PromptGenerator:
         self.resources: list[str] = []
         self.performance_evaluation: list[str] = []
         self.response_format = {
-            "communication_state": {
-                "past": "brief summary of past actions and communication",
-                "present": "current action or communication focus",
-                "future": "anticipated actions or communication objectives",
-            },
             "thoughts": {
+                "summary": "summary of current action",
                 "text": "thought",
                 "reasoning": "reasoning",
                 "plan": "- short bulleted\n- list that conveys\n- long-term plan \n- order by priority",

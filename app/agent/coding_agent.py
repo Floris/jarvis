@@ -1,16 +1,15 @@
 import logging
 
-from agent import Agent
 from helpers.chat import generate_chat
-from helpers.file_helpers import read_file
+from helpers.file_helpers import read_file, save_code_to_file
 from helpers.processor import parse_response
-from helpers.utils import remove_whitespace, save_code_to_file
+from helpers.utils import remove_whitespace
 from schemas import MessageDict
 
 logger = logging.getLogger()
 
 
-class CodingAgent(Agent):
+class CodingAgent:
     """
     Agent that generates code for a project structure.
     """
