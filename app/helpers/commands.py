@@ -1,19 +1,7 @@
+from agent.coding_assistant import CodingAssistant
 from agent.manager import delete_agent, list_agents, message_agent, start_agent
 from exceptions import ShutDown
-from helpers.chat import create_conversation_message
 from helpers.file_helpers import append_to_file, read_file, write_to_file
-from schemas import MessageDict
-
-
-def append_generate_code(conversation: list[MessageDict]) -> list[MessageDict]:
-    content = """Generate code for all the files in the project structure.\n
-                Please use 'File: {Project Name}/{path}/{filename}' as a tag for the file before the code block. And 'Done: {Project Name}/{path}/{filename}' as a tag for the file after the code block.\n
-                When finished, please type '---Finished---' to end the chat.
-                """.strip()
-    message = create_conversation_message(role="user", content=content)
-
-    conversation.append(message)
-    return conversation
 
 
 def handle_command(name: str, args: dict) -> str:
@@ -32,6 +20,11 @@ def handle_command(name: str, args: dict) -> str:
     """
     if name == "shutdown":
         raise ShutDown("Shutdown command received.")
+
+    elif name == "start_coding_assistant":
+        return CodingAssistant(
+            name=args["name"], project_structure_file_name=args["file_name"]
+        ).start()
 
     elif name == "start_agent":
         return start_agent(args["name"], task=args["task"], prompt=args["prompt"])

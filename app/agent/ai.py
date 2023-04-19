@@ -69,7 +69,7 @@ class AI:
         self.name = name
         self.prompt = prompt
         self.user_input = user_input
-        self.message_history = message_history
+        self.message_history: list[MessageDict] = message_history
         self.memory: list[str] = []
 
     def chat(self) -> ResponseDict:
@@ -115,11 +115,7 @@ class AI:
         while True:
             input("Press enter to continue...")
 
-            try:
-                reply = self.chat()
-            except ShutDown as e:
-                logger.info(e)
-                break
+            reply = self.chat()
 
             logger.info("====================")
             logger.info("Thoughts \n")
@@ -139,10 +135,13 @@ class AI:
                 result = f"Human feedback: {self.user_input}"
             else:
                 self.user_input = "GENERATE NEXT COMMAND JSON"
-                result = (
-                    f"Command {reply['command']['name']} returned: "
-                    f"{handle_command(name=reply['command']['name'], args=reply['command']['args'])}"
-                )
+                try:
+                    result = (
+                        f"Command {reply['command']['name']} returned: "
+                        f"{handle_command(name=reply['command']['name'], args=reply['command']['args'])}"
+                    )
+                except ShutDown:
+                    break
 
             self.memory.append(
                 f"\nAssistant Reply: {reply} "

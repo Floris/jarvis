@@ -30,15 +30,13 @@ def main():
             "AI69",
             "a tech startup CTO, looking to create a new tech product!",
             [
-                "Create your own game in JavaScript. You are in control, and you can do anything you want. ",
-                "Ask an Agent to come up with a game idea. ",
-                "Ask the Agent to create the code for the game.",
-                "Keep iterating until you have a game you like.",
+                "Use an GPT Agent to come up with a game idea. The idea should be something you can create in JavaScript & I expect a minimum of 200 words.",
+                "Save the idea to a file called idea.txt.",
+                "Use a Coding Assistant to create code for the file 'idea.txt'.",
                 "Shutdown after achieving the goal.",
             ],
         ),
         user_input=triggering_prompt,
-        message_history=[],
     )
     ai.start()
 

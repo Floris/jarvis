@@ -1,6 +1,6 @@
 import logging
 
-from helpers.chat import generate_chat
+from helpers.chat import create_conversation_message, generate_chat
 from helpers.file_helpers import read_file, save_code_to_file
 from helpers.processor import parse_response
 from helpers.utils import remove_whitespace
@@ -9,10 +9,10 @@ from schemas import MessageDict
 logger = logging.getLogger()
 
 
-# NOTE: This will be integrated into the main agent class. Will be removed once the integration is complete.
-class CodingAgent:
+# TODO: Integrate this into the Agent class
+class CodingAssistant:
     """
-    Agent that generates code for a project structure.
+    Assistant that can only generate code for a project structure.
     """
 
     def __init__(self, name: str, project_structure_file_name: str) -> None:
@@ -28,9 +28,9 @@ class CodingAgent:
         """
         Constructs the prompt for the AI to generate code for the project structure.
         """
-        project_information = read_file(filename=self.project_structure_file_name)
-        prompt = project_information
-        prompt += "\n\n Generate code for all the files in the project structure.\n"
+        prompt = read_file(filename=self.project_structure_file_name)
+        prompt += "\n\n Generate code for all the files and information in the project structure.\n"
+        prompt += "\n Use your imagination, do not deliver empty functions.\n"
         prompt += "Please use 'File: {Project Name}/{path}/{filename}' as a tag for the file before the code block. And 'Done: {Project Name}/{path}/{filename}' as a tag for the file after the code block.\n"
         prompt += "When finished, please type '---Finished---' to end the chat."
         return prompt
@@ -44,7 +44,11 @@ class CodingAgent:
         prompt = self.construct_prompt()
 
         conversation: list[MessageDict] = [
-            {"role": "user", "content": prompt},
+            create_conversation_message(
+                "system",
+                "You are a Legendary Software Engineer, you know everything there is to know about software engineering. When creating the code you always finish what you start. You cannot ask for help. ",
+            ),
+            create_conversation_message("user", prompt),
         ]
 
         conversation, _ = generate_chat(conversation, temperature=0.0)
@@ -63,9 +67,7 @@ class CodingAgent:
                 remove_whitespace(current_file),
             )
 
-        response = (
-            f"{self.name} has created the code for file(s): {', '.join(actions_list)}"
-        )
+        response = f"Agent {self.name} has finished coding. Response: created code for file(s): {', '.join(actions_list)}"
         logger.info("=====================================")
         logger.info(f"Shutting down agent {self.name}...")
         logger.info(response)

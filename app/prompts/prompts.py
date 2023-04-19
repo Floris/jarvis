@@ -2,6 +2,14 @@ from prompts.prompt_generator import PromptGenerator
 
 commands = [
     (
+        "Start Coding Assistant",
+        "start_coding_assistant",
+        {
+            "name": "<name>",
+            "file_name": "<file_name>",
+        },
+    ),
+    (
         "Start GPT Agent",
         "start_agent",
         {"name": "<name>", "task": "<short_task_desc>", "prompt": "<prompt>"},

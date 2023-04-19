@@ -1,8 +1,6 @@
 import re
 
-from helpers.commands import chat_commands
 from helpers.utils import remove_code_block, remove_whitespace
-from schemas import MessageDict
 
 file_pattern = re.compile(r".*File:")
 
@@ -51,34 +49,3 @@ def parse_response(response: str) -> list[tuple[str, str, str]]:
         add_current_code()
 
     return file_code_pairs
-
-
-def process_input(answer: str, conversation: list[MessageDict]) -> list[MessageDict]:
-    """
-    Processes the user's input.
-
-    Args:
-        answer str: The user's input.
-        conversation list[MessageDict]: The conversation so far.
-
-    Returns:
-        list[MessageDict]: The updated conversation.
-    """
-
-    if answer in {"exit", "quit", "stop", "done"}:
-        exit(code="User exited the chat.")
-
-    # Append the command's response to the conversation list
-    if answer in chat_commands.keys():
-        conversation = chat_commands[answer](conversation)
-        return conversation
-
-    # Append the user's answer to the conversation list
-    conversation.append(
-        {
-            "role": "user",
-            "content": answer,
-        },
-    )
-
-    return conversation
