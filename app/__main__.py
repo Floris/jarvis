@@ -6,10 +6,6 @@ from ai.ai import AI
 from helpers.fancy_logging import ColoredLogRecord
 from prompts.prompts import construct_prompt
 
-from settings import settings
-
-openai.api_key = settings.api_key
-
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
@@ -17,6 +13,14 @@ console_handler = logging.StreamHandler(sys.stdout)
 console_handler.setFormatter(logging.Formatter("%(levelname)s: %(message)s"))
 logging.setLogRecordFactory(ColoredLogRecord)
 logger.addHandler(console_handler)
+
+
+try:
+    from settings import settings
+
+    openai.api_key = settings.api_key
+except ImportError as e:
+    logger.exception(e)
 
 
 def main() -> None:
