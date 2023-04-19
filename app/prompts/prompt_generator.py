@@ -42,7 +42,9 @@ class PromptGenerator:
         """
         self.constraints.append(constraint)
 
-    def add_command(self, command_label: str, command_name: str, args=None) -> None:
+    def add_command(
+        self, command_label: str, command_name: str, args: dict[str, str] | None = None
+    ) -> None:
         """
         Add a command to the commands list with a label, name, and optional arguments.
         Args:
@@ -93,7 +95,7 @@ class PromptGenerator:
         """
         self.performance_evaluation.append(evaluation)
 
-    def _generate_numbered_list(self, items: list[Any], item_type="list") -> str:
+    def _generate_numbered_list(self, items: list[Any], item_type: str = "list") -> str:
         """
         Generate a numbered list from given items based on the item_type.
         Args:

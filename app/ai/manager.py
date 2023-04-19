@@ -3,7 +3,7 @@ from helpers.utils import is_int
 from schemas import MessageDict
 
 
-def start_agent(name: str, task: str, prompt: str, model="gpt-3.5-turbo") -> str:
+def start_agent(name: str, task: str, prompt: str, model: str = "gpt-3.5-turbo") -> str:
     """
     Start an agent with a given name, task, and prompt.
 
@@ -38,7 +38,7 @@ def message_agent(key: str, message: str) -> str:
     return agent_manager.message_agent(int(key), message)
 
 
-def list_agents():
+def list_agents() -> str:
     """List all agents
     Returns:
         str: A list of all agents
@@ -75,7 +75,7 @@ class AgentManager:
         ] = {}  # key, (task, full_message_history, model)
 
     def create_agent(
-        self, task: str, prompt: str, model="gpt-3.5-turbo"
+        self, task: str, prompt: str, model: str = "gpt-3.5-turbo"
     ) -> tuple[int, str]:
         """
         Create a new agent with the given task, prompt, and model.

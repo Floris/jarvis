@@ -99,7 +99,7 @@ class AI:
 
         return json.loads(conversation[-1]["content"])
 
-    def start(self):
+    def start(self) -> None:
         """
         Start the AI loop, where the AI processes user input and returns responses.
         This loop continues until the "shutdown" command is received.

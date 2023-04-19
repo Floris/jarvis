@@ -12,7 +12,7 @@ class ColoredLogRecord(logging.LogRecord):
     }
     RESET_SEQ = "\x1b[0m"
 
-    def getMessage(self):
+    def getMessage(self) -> str:
         msg = super().getMessage()
         color = self.COLOR_MAP.get(self.levelno, "")
         return f"{color}{msg}{self.RESET_SEQ}"

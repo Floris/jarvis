@@ -1,5 +1,6 @@
 import os
 import os.path
+from collections.abc import Generator
 
 working_directory = "generated"
 
@@ -8,7 +9,7 @@ if not os.path.exists(working_directory):
     os.makedirs(working_directory)
 
 
-def safe_join(base, *paths):
+def safe_join(base: str, *paths: str) -> str:
     """Join one or more path components intelligently."""
     new_path = os.path.join(base, *paths)
     norm_new_path = os.path.normpath(new_path)
@@ -19,7 +20,9 @@ def safe_join(base, *paths):
     return norm_new_path
 
 
-def split_file(content, max_length=4000, overlap=0):
+def split_file(
+    content: str, max_length: int = 4000, overlap: int = 0
+) -> Generator[str, None, None]:
     """
     Split text into chunks of a specified maximum length with a specified overlap
     between chunks.
@@ -41,7 +44,7 @@ def split_file(content, max_length=4000, overlap=0):
         start += max_length - overlap
 
 
-def read_file(filename) -> str:
+def read_file(filename: str) -> str:
     """Read a file and return the contents"""
     try:
         filepath = safe_join(working_directory, filename)
@@ -52,38 +55,7 @@ def read_file(filename) -> str:
         return f"Error: {str(e)}"
 
 
-def ingest_file(filename, memory, max_length=4000, overlap=200):
-    """
-    Ingest a file by reading its content, splitting it into chunks with a specified
-    maximum length and overlap, and adding the chunks to the memory storage.
-    :param filename: The name of the file to ingest
-    :param memory: An object with an add() method to store the chunks in memory
-    :param max_length: The maximum length of each chunk, default is 4000
-    :param overlap: The number of overlapping characters between chunks, default is 200
-    """
-    try:
-        print(f"Working with file {filename}")
-        content = read_file(filename)
-        content_length = len(content)
-        print(f"File length: {content_length} characters")
-
-        chunks = list(split_file(content, max_length=max_length, overlap=overlap))
-
-        num_chunks = len(chunks)
-        for i, chunk in enumerate(chunks):
-            print(f"Ingesting chunk {i + 1} / {num_chunks} into memory")
-            memory_to_add = (
-                f"Filename: {filename}\n" f"Content part#{i + 1}/{num_chunks}: {chunk}"
-            )
-
-            memory.add(memory_to_add)
-
-        print(f"Done ingesting {num_chunks} chunks from {filename}.")
-    except Exception as e:
-        print(f"Error while ingesting file '{filename}': {str(e)}")
-
-
-def write_to_file(filename, text):
+def write_to_file(filename: str, text: str) -> str:
     """Write text to a file"""
     try:
         filepath = safe_join(working_directory, filename)
@@ -97,7 +69,7 @@ def write_to_file(filename, text):
         return "Error: " + str(e)
 
 
-def append_to_file(filename, text):
+def append_to_file(filename: str, text: str) -> str:
     """Append text to a file"""
     try:
         filepath = safe_join(working_directory, filename)
@@ -108,7 +80,7 @@ def append_to_file(filename, text):
         return "Error: " + str(e)
 
 
-def delete_file(filename):
+def delete_file(filename: str) -> str:
     """Delete a file"""
     try:
         filepath = safe_join(working_directory, filename)
@@ -118,7 +90,7 @@ def delete_file(filename):
         return "Error: " + str(e)
 
 
-def search_files(directory):
+def search_files(directory: str) -> list[str]:
     found_files = []
 
     if directory == "" or directory == "/":
@@ -152,7 +124,7 @@ def save_code_to_file(code: str, file_path: str, file: str) -> None:
     # This sets the base path to the root of the project.
     base_path = f"{os.path.abspath(os.path.join(os.getcwd()))}/generated"
 
-    def from_base_path_create_folder(folder_name):
+    def from_base_path_create_folder(folder_name: str) -> str:
         folder = os.path.join(base_path, folder_name)
         if not os.path.exists(folder):
             print(f"Creating folder: {folder}")

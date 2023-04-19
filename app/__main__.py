@@ -19,7 +19,7 @@ logging.setLogRecordFactory(ColoredLogRecord)
 logger.addHandler(console_handler)
 
 
-def main():
+def main() -> None:
     triggering_prompt = (
         "Determine which next command to use, and respond using the"
         " format specified above:"
