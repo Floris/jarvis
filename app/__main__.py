@@ -2,7 +2,7 @@ import logging
 import sys
 
 import openai
-from agent.ai import AI
+from ai.ai import AI
 from helpers.fancy_logging import ColoredLogRecord
 from prompts.prompts import construct_prompt
 

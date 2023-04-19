@@ -14,15 +14,13 @@ This will install all the necessary dependencies for the project.
 
 ## How to Use
 
-Starting the AI
+Starting the AI.
 
 ```
 python app
 ```
 
 The AI will try to complete your goals.
-
-Generated code will be saved in:
 
 ```
 /generated

@@ -1,5 +1,5 @@
-from agent.coding_assistant import CodingAssistant
-from agent.manager import delete_agent, list_agents, message_agent, start_agent
+from ai.coding_assistant import CodingAssistant
+from ai.manager import delete_agent, list_agents, message_agent, start_agent
 from exceptions import ShutDown
 from helpers.file_helpers import append_to_file, read_file, write_to_file
 
