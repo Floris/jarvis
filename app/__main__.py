@@ -24,34 +24,16 @@ def main():
         "Determine which next command to use, and respond using the"
         " format specified above:"
     )
-    # ai = AI(
-    #     name="AI69",
-    #     next_action_count=0,
-    #     prompt=construct_prompt(
-    #         "AI69",
-    #         "a CTO tasked creating a backend system for a cryptocurrency exchange. It does not have to be tested or deployed.",
-    #         [
-    #             "Create an Agent that thinks about what backend functionalities the cryptocurrency exchange should have and save it to file 'functionalities.txt'.",
-    #             "Create an Agent that thinks about the technology stack of the cryptocurrency exchange save it to file 'stack.txt'.",
-    #             "Create an Agent that thinks about the project structure of the cryptocurrency exchange save it to file 'project_structure.txt'.",
-    #             "Generate and save the code. Use multiple Agents to generate the code for the project structure."
-    #             "Shutdown after achieving the goal.",
-    #         ],
-    #     ),
-    #     user_input=triggering_prompt,
-    #     message_history=[],
-    # )
     ai = AI(
         name="AI69",
-        next_action_count=0,
         prompt=construct_prompt(
             "AI69",
-            "a Writer tasked with writing a new book.",
+            "a tech startup CTO, looking to create a new tech product!",
             [
-                "Use an Agent to create 5 characters and save it to a file",
-                "Use an Agent to create 5 scenes and save it to a file",
-                "Use an Agent to create 5 plot points and save it to a file",
-                "Read the files and use an Agent to write the book, save it to a file when done."
+                "Create your own game in JavaScript. You are in control, and you can do anything you want. ",
+                "Ask an Agent to come up with a game idea. ",
+                "Ask the Agent to create the code for the game.",
+                "Keep iterating until you have a game you like.",
                 "Shutdown after achieving the goal.",
             ],
         ),

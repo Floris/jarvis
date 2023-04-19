@@ -54,7 +54,6 @@ class AI:
 
     Args:
         name (str): The name of the AI.
-        next_action_count (int): The next action count.
         prompt (str): The initial prompt for the AI.
         user_input (str): The initial user input.
         message_history (list[MessageDict], optional): The message history. Defaults to [].
@@ -63,13 +62,11 @@ class AI:
     def __init__(
         self,
         name: str,
-        next_action_count: int,
         prompt: str,
         user_input: str,
         message_history: list[MessageDict] = [],
     ) -> None:
         self.name = name
-        self.next_action_count = next_action_count
         self.prompt = prompt
         self.user_input = user_input
         self.message_history = message_history
