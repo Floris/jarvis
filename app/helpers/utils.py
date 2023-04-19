@@ -11,7 +11,7 @@ def remove_code_block(s: str) -> str:
     return "" if "```" in s else s
 
 
-def remove_whitespace(s):
+def remove_whitespace(s: str) -> str:
     """
     Removes all whitespace characters from a string.
 

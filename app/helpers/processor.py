@@ -21,7 +21,7 @@ def parse_response(response: str) -> list[tuple[str, str, str]]:
     current_code: list[str] = []
     parsing_code = False
 
-    def add_current_code():
+    def add_current_code() -> None:
         file_code_pairs.append((current_folder, current_file, "\n".join(current_code)))
         current_code.clear()
 
