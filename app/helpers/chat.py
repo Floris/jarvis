@@ -4,10 +4,6 @@ from typing import Literal
 import openai
 from schemas import ApiResponseSchema, MessageDict
 
-from settings import settings
-
-openai.api_key = settings.api_key
-
 logger = logging.getLogger()
 
 
