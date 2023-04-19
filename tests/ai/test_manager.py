@@ -4,6 +4,7 @@ from app.ai.manager import AgentManager
 from tests.mocks.chat import mock_generate_chat
 
 
+@mock_generate_chat()
 @pytest.fixture
 def agent_manager():
     agent_manager = AgentManager()
@@ -16,6 +17,7 @@ def agent_manager():
     return agent_manager
 
 
+@mock_generate_chat()
 def test_create_agent(agent_manager):
     task = "Test task"
     prompt = "Test prompt"
