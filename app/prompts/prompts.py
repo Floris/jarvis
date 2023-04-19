@@ -14,7 +14,9 @@ commands = [
     (
         "List GPT Agents",
         "list_agents",
-        {},
+        {
+            "reason": "<reason>",
+        },
     ),
     (
         "Delete GPT Agent",

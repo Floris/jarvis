@@ -128,7 +128,7 @@ class PromptGenerator:
             f"{self._generate_numbered_list(self.performance_evaluation)}\n\n"
             "You should only respond in JSON format as described below \nResponse"
             f" Format: \n{formatted_response_format} \nEnsure the response can be"
-            "parsed by Python json.loads and is always be a single object."
+            "parsed by Python json.loads and is always be a single object, use double quotes."
             # f" Format: \n{formatted_response_format} \nEnsure the response can be"
             # "parsed by Python json.loads"
         )
