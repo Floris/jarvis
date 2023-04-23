@@ -26,7 +26,7 @@ Starting the AI.
 python app
 ```
 
-The AI will try to complete your goals.
+Saved files will be stored here:
 
 ```
 /generated
