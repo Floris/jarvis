@@ -26,10 +26,10 @@ def generate_chat(
         tuple[List[MessageDict], Literal["length", "stop", "eos"]]: Updated conversation list and the reason the conversation finished.
     """
 
-    logger.debug("=====================================")
-    logger.debug("Prompt:")
-    logger.debug(conversation[-1]["content"])
-    logger.debug("=====================================")
+    # logger.debug("=====================================")
+    # logger.debug("Prompt:")
+    # logger.debug(conversation[-1]["content"])
+    # logger.debug("=====================================")
 
     response = ApiResponseSchema.parse_obj(
         openai.ChatCompletion.create(
@@ -41,7 +41,7 @@ def generate_chat(
     )
 
     logger.info(("API response.usage ===> ", response.usage))
-    logger.debug(("API response content ===> ", response.choices[0].message["content"]))
+    logger.info(("API response content ===> ", response.choices[0].message["content"]))
 
     conversation.append(
         MessageDict(

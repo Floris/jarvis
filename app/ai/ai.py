@@ -99,11 +99,6 @@ class AI:
             )
             current_tokens_used = count_tokens(str(conversation))
 
-        logger.info("======================")
-        logger.info("relevant_memory")
-        logger.info(relevant_memory)
-        logger.info("======================")
-
         conversation.append(create_conversation_message("user", self.user_input))
 
         # add user input message to history

@@ -7,7 +7,7 @@ from helpers.fancy_logging import ColoredLogRecord
 from prompts.prompts import construct_prompt
 
 logger = logging.getLogger()
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
 console_handler = logging.StreamHandler(sys.stdout)
 console_handler.setFormatter(logging.Formatter("%(levelname)s: %(message)s"))
@@ -24,27 +24,24 @@ except ImportError as e:
 
 
 def main() -> None:
-    name = "AI"
-    ai = AI(
-        name=name,
-        prompt=construct_prompt(
-            name,
-            "a tech startup CTO, looking to create a cryptocurrency trading bot.",
-            [
-                "Use an GPT Agent to brainstorm ideas for the bot.",
-                "Use GPT Agent an GPT agent for feedback on the ideas. Do this until you have a good idea",
-                "Once you have a good idea, use an GPT Agent to build out a plan for the bot."
-                "Save the plan to a file called plan.txt.",
-                "Use an GPT Agent to create pseudocode for the bot."
-                "Shutdown after achieving the goal.",
-            ],
-        ),
-        user_input=(
-            "Determine which next command to use, and respond using the"
-            " format specified above:"
-        ),
+    ai_name = "Codebot"
+    ai_role = "an AI trained to create coding products and assist with programming tasks. Generates code snippets based on user requirements. Identifies bugs and suggest fixes. Optimizes code for performance and readability."
+    ai_goals = [
+        "Generate a Python function to calculate the factorial of a number?",
+        "Save the function to a file.",
+        "Shutdown when the goal is achieved",
+    ]
+    initial_user_input = (
+        "Determine which next command to use, and respond using the"
+        " format specified above:"
     )
-    ai.start()
+    ai_prompt = construct_prompt(ai_name, ai_role, ai_goals)
+    codebot = AI(
+        name=ai_name,
+        prompt=ai_prompt,
+        user_input=initial_user_input,
+    )
+    codebot.start()
 
 
 if __name__ == "__main__":
