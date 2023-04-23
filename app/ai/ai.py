@@ -112,6 +112,9 @@ class AI:
         return json.loads(conversation[-1]["content"])
 
     def start(self) -> None:
+        """
+        Starts the AI, including the memory and the AI loop.
+        """
         with WeaviateMemory(ai_name=self.name) as memory:
             self.memory = memory
             self.start_loop()
