@@ -10,7 +10,7 @@ logger = logging.getLogger()
 def generate_chat(
     conversation: list[MessageDict],
     model: str = "gpt-3.5-turbo",
-    temperature: float = 0.5,
+    temperature: float = 0.0,
     stop: str | list[str] | None = None,
 ) -> tuple[list[MessageDict], Literal["length", "stop", "eos"]]:
     """

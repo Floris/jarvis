@@ -43,9 +43,11 @@ def list_agents() -> str:
     Returns:
         str: A list of all agents
     """
-    return "List of agents:\n" + "\n".join(
-        [f"{str(x[0])}: {x[1]}" for x in agent_manager.list_agents()]
-    )
+    agents = agent_manager.list_agents()
+    if len(agents) == 0:
+        return "0 agents."
+
+    return "List of agents:\n" + "\n".join([f"{str(x[0])}: {x[1]}" for x in agents])
 
 
 def delete_agent(key: str) -> str:

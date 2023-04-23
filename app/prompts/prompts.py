@@ -2,11 +2,10 @@ from prompts.prompt_generator import PromptGenerator
 
 commands = [
     (
-        "Start Coding Assistant",
-        "start_coding_assistant",
+        "Add information to memory",
+        "memory_add",
         {
-            "name": "<name>",
-            "file_name": "<file_name>",
+            "string": "<information_to_add>",
         },
     ),
     (
@@ -36,7 +35,7 @@ commands = [
         "write_to_file",
         {
             "file": "<file>",
-            "text": "<text>",
+            "text": "<text_or_full_code_string>",
             "reason": "<reason>",
             "reflection": "<reflection_about_what_happened>",
         },
@@ -55,7 +54,7 @@ commands = [
         "append_to_file",
         {
             "file": "<file>",
-            "text": "<text>",
+            "text": "<text_or_full_code_string>",
             "reason": "<reason>",
             "reflection": "<reflection_about_what_happened>",
         },
@@ -136,7 +135,7 @@ def get_prompt() -> str:
         "If you are unsure how you previously did something or want to recall past"
         " events, thinking about similar events will help you remember."
     )
-    prompt_generator.add_constraint("No user assistance")
+    # prompt_generator.add_constraint("No user assistance")
     prompt_generator.add_constraint(
         'Exclusively use the commands listed in double quotes e.g. "command name"'
     )
