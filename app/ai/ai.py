@@ -1,32 +1,13 @@
 import json
 import logging
-from typing import TypedDict
 
 from exceptions import ShutDown
 from helpers.chat import create_conversation_message, generate_chat
 from helpers.commands import handle_command
 from memory.memory import WeaviateMemory
-from schemas import MessageDict
+from schemas import MessageDict, ResponseDict
 
 logger = logging.getLogger()
-
-
-class ThoughtsDict(TypedDict):
-    summary: str
-    text: str
-    reasoning: str
-    plan: str
-    criticism: str
-
-
-class CommandDict(TypedDict):
-    name: str
-    args: dict[str, str]
-
-
-class ResponseDict(TypedDict):
-    thoughts: ThoughtsDict
-    command: CommandDict
 
 
 def generate_context(prompt: str, relevant_memory: str) -> list[MessageDict]:
@@ -54,44 +35,18 @@ def generate_context(prompt: str, relevant_memory: str) -> list[MessageDict]:
     ]
 
 
-def truncate_history(history: list[MessageDict], max_tokens: int) -> str:
+def count_tokens(text: str) -> int:
     """
-    Truncate conversation history by keeping important context messages or shortening less relevant ones.
+    Count the number of tokens in the given text based on spaces.
 
     Args:
-        history (List[str]): The conversation history.
-        max_tokens (int): The maximum number of tokens allowed.
+        text (str): The text to count tokens in.
 
     Returns:
-        List[str]: Truncated conversation history.
+        int: The number of tokens in the text.
     """
-    truncated_history = []
-    current_token_count = 0
-
-    # Reverse the history to prioritize recent messages
-    for message in reversed(history):
-        message = str(message)
-        tokens = message.split(" ")
-        token_count = len(tokens)
-
-        # Check if adding the current message would exceed the token limit
-        if current_token_count + token_count <= max_tokens:
-            truncated_history.append(message)
-            current_token_count += token_count
-        else:
-            remaining_tokens = max_tokens - current_token_count
-
-            # If there's enough space for some tokens from the current message, add them
-            if remaining_tokens > 0:
-                truncated_message = " ".join(tokens[:remaining_tokens])
-                truncated_history.append(truncated_message)
-                current_token_count += remaining_tokens
-
-            # Stop processing since the token limit has been reached
-            break
-
-    # Reverse the truncated history to maintain the original order
-    return str(reversed(truncated_history))
+    tokens = text.split()
+    return len(tokens)
 
 
 class AI:
@@ -124,18 +79,30 @@ class AI:
         Returns:
             ResponseDict: The AI-generated response.
         """
-        truncated_history = truncate_history(self.message_history[-9:], max_tokens=800)
-        relevant_memory = self.memory.get_relevant(data=truncated_history)
-
-        logger.info("======================")
-        logger.info("relevant_memory")
-        logger.info(relevant_memory)
-        logger.info("======================")
+        relevant_memory = self.memory.get_relevant(
+            data=str(self.message_history[-9:]), num_relevant=10
+        )
 
         conversation = generate_context(
             prompt=self.prompt,
             relevant_memory=relevant_memory,
         )
+
+        current_tokens_used = count_tokens(str(conversation))
+        while current_tokens_used > 2100:
+            logger.info("current_tokens_used > 2100")
+            # remove memories until we are under 2100 tokens
+            relevant_memory = relevant_memory[:-1]
+            conversation = generate_context(
+                prompt=self.prompt,
+                relevant_memory=relevant_memory,
+            )
+            current_tokens_used = count_tokens(str(conversation))
+
+        logger.info("======================")
+        logger.info("relevant_memory")
+        logger.info(relevant_memory)
+        logger.info("======================")
 
         conversation.append(create_conversation_message("user", self.user_input))
 

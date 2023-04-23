@@ -29,31 +29,13 @@ def main() -> None:
         name=name,
         prompt=construct_prompt(
             name,
-            "a tech startup CTO, looking to create a new tech product!",
+            "a tech startup CTO, looking to create a cryptocurrency trading bot.",
             [
-                "Use an GPT Agent to come up with a game idea. The idea should be something you can create in JavaScript & I expect a minimum of 200 words.",
-                "Use GPT Agent an GPT agent for feedback on the idea.",
-                "Once the idea is approved, use an GPT Agent to come up with a game plan. The plan should be something you can create in JavaScript & I expect a minimum of 200 words.",
+                "Use an GPT Agent to brainstorm ideas for the bot.",
+                "Use GPT Agent an GPT agent for feedback on the ideas. Do this until you have a good idea",
+                "Once you have a good idea, use an GPT Agent to build out a plan for the bot."
                 "Save the plan to a file called plan.txt.",
-                "Shutdown after achieving the goal.",
-            ],
-        ),
-        user_input=(
-            "Determine which next command to use, and respond using the"
-            " format specified above:"
-        ),
-    )
-    ai.start()
-
-    name = "PSEUDOCODE_AI"
-    ai = AI(
-        name=name,
-        prompt=construct_prompt(
-            name,
-            "a tech startup CTO, building a new tech product!",
-            [
-                "Read plan.txt & use an GPT Agent to create pseudocode for the game plan.",
-                "Save the pseudocode to a file.",
+                "Use an GPT Agent to create pseudocode for the bot."
                 "Shutdown after achieving the goal.",
             ],
         ),
