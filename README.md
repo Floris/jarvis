@@ -1,6 +1,6 @@
 # Jarvis - AI Code Project Generator
 
-Jarvis is a Python-based AI code project generator that uses OpenAI's GPT-3.5-turbo model to generate code for your projects. It asks a series of questions to gather information about your project and generates a prompt based on the answers, which includes instructions and generated code.
+Jarvis is an AI-driven Python tool that empowers you to tackle various tasks such as problem-solving, book writing, code creation, and more. This personal side project utilizes the OpenAI API to provide an interactive and dynamic coding experience.
 
 ## Installation
 
@@ -14,34 +14,41 @@ This will install all the necessary dependencies for the project.
 
 ## How to Use
 
-Choose between utilizing a predefined prompt from `prompts/prompt.txt` or creating a custom prompt by answering a set of questions.
-
-To initiate Jarvis, run the command below:
+Start Weaviate
 
 ```
-python app/javis.py
+docker-compose up -d
 ```
 
-The script will then ask a series of questions to collect necessary information. Once completed, it will create a prompt based on the responses and any additional guidance provided.
-
-The generated prompt will be used to create the project structure using OpenAI's GPT-3.5-turbo model.
-
-If you need to give feedback, you can do so; otherwise, execute the following command:
+Starting the AI.
 
 ```
-create_code
+python app
 ```
 
-The code will be generated in the specified directory:
+The AI will try to complete your goals.
 
 ```
-/generated/{project_title}
+/generated
 ```
 
-To terminate the script, enter the command:
+Commands utilized by the AI
 
 ```
-exit
+-start_coding_assistant # specialized in writing code
+-start_agent
+-message_agent
+-list_agents
+-delete_agent
+-write_to_file
+-read_file
+-append_file
+-update_file
+-delete_file
+-search_files
+-ask_for_help
+-do_nothing
+-shut_down
 ```
 
 ## API Key

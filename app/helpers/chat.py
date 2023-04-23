@@ -1,19 +1,16 @@
+import logging
 from typing import Literal
 
 import openai
-from helpers.processor import parse_response
-from helpers.utils import remove_whitespace, save_code_to_file
 from schemas import ApiResponseSchema, MessageDict
 
-from settings import settings
-
-openai.api_key = settings.api_key
+logger = logging.getLogger()
 
 
 def generate_chat(
     conversation: list[MessageDict],
     model: str = "gpt-3.5-turbo",
-    temperature: float = 0.5,
+    temperature: float = 0.0,
     stop: str | list[str] | None = None,
 ) -> tuple[list[MessageDict], Literal["length", "stop", "eos"]]:
     """
@@ -29,6 +26,11 @@ def generate_chat(
         tuple[List[MessageDict], Literal["length", "stop", "eos"]]: Updated conversation list and the reason the conversation finished.
     """
 
+    # logger.debug("=====================================")
+    # logger.debug("Prompt:")
+    # logger.debug(conversation[-1]["content"])
+    # logger.debug("=====================================")
+
     response = ApiResponseSchema.parse_obj(
         openai.ChatCompletion.create(
             model=model,
@@ -38,7 +40,8 @@ def generate_chat(
         )
     )
 
-    print("API response.usage ===> ", response.usage)
+    logger.info(("API response.usage ===> ", response.usage))
+    logger.info(("API response content ===> ", response.choices[0].message["content"]))
 
     conversation.append(
         MessageDict(
@@ -50,24 +53,17 @@ def generate_chat(
     return conversation, response.choices[0].finish_reason
 
 
-def handle_incoming_message(incoming_message: str) -> None:
+def create_conversation_message(
+    role: Literal["system", "user"], content: str
+) -> MessageDict:
     """
-    Handles the incoming message from the OpenAI API.
+    Create a conversation message dictionary.
 
     Args:
-        incoming_message str: The incoming message from the OpenAI API.
+        role (Literal["system", "user"]): The role of the message sender.
+        content (str): The content of the message.
 
     Returns:
-        None
+        MessageDict: The created message dictionary.
     """
-
-    # Parse latest chat response to get the code
-    file_code_pairs = parse_response(incoming_message)
-
-    # Save the generated code
-    for current_folder, current_file, code in file_code_pairs:
-        save_code_to_file(
-            code,
-            remove_whitespace(current_folder),
-            remove_whitespace(current_file),
-        )
+    return {"role": role, "content": content}

@@ -27,3 +27,21 @@ class ApiResponseSchema(BaseModel):
     model: str
     usage: UsageSchema
     choices: list[ChoiceSchema]
+
+
+class ThoughtsDict(TypedDict):
+    summary: str
+    text: str
+    reasoning: str
+    plan: str
+    criticism: str
+
+
+class CommandDict(TypedDict):
+    name: str
+    args: dict[str, str]
+
+
+class ResponseDict(TypedDict):
+    thoughts: ThoughtsDict
+    command: CommandDict

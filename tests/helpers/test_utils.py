@@ -1,4 +1,5 @@
-from app.helpers.utils import remove_code_block, remove_whitespace, save_code_to_file
+from app.helpers.file_helpers import save_code_to_file
+from app.helpers.utils import remove_code_block, remove_whitespace
 
 
 def test_remove_code_block():
