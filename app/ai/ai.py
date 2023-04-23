@@ -89,9 +89,9 @@ class AI:
         )
 
         current_tokens_used = count_tokens(str(conversation))
+
+        # remove memories until we are under 2100 tokens
         while current_tokens_used > 2100:
-            logger.info("current_tokens_used > 2100")
-            # remove memories until we are under 2100 tokens
             relevant_memory = relevant_memory[:-1]
             conversation = generate_context(
                 prompt=self.prompt,
@@ -149,6 +149,7 @@ class AI:
                 self.user_input = input(
                     f'Question: {reply["command"]["args"]["question"]} \n Answer: '
                 )
+                self.user_input += "\n\n GENERATE NEXT COMMAND JSON"
                 result = f"Human feedback: {self.user_input}"
             else:
                 self.user_input = "GENERATE NEXT COMMAND JSON"
