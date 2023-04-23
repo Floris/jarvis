@@ -12,7 +12,7 @@ WEAVIATE_URL = "http://localhost:8080"
 OPENAI_MODEL_NAME = "text-embedding-ada-002"
 
 
-def text_to_vector(text: str) -> np.ndarray:
+def convert_text_to_vector(text: str) -> np.ndarray:
     """
     Convert the given text to a vector using OpenAI's text-embedding-ada-002 model.
 
@@ -31,7 +31,7 @@ def text_to_vector(text: str) -> np.ndarray:
     return np.array(embeddings, dtype=np.float32)
 
 
-def default_schema(weaviate_index: str) -> dict:
+def get_default_schema(weaviate_index: str) -> dict:
     """
     Returns the default schema for a given Weaviate index.
 
@@ -53,10 +53,10 @@ def default_schema(weaviate_index: str) -> dict:
     }
 
 
-class WeaviateMemory:
+class WeaviateMemoryStorage:
     def __init__(self, ai_name: str) -> None:
         """
-        Initializes a new WeaviateMemory instance.
+        Initializes a new WeaviateMemoryStorage instance.
 
         Args:
             ai_name (str): The name of the AI.
@@ -67,39 +67,39 @@ class WeaviateMemory:
         )
 
         self.index = ai_name
-        self._create_schema()
+        self._initialize_schema()
 
-    def __enter__(self) -> "WeaviateMemory":
+    def __enter__(self) -> "WeaviateMemoryStorage":
         """
-        Enters the WeaviateMemory instance.
+        Enters the WeaviateMemoryStorage instance.
 
         Returns:
-            WeaviateMemory: The WeaviateMemory instance.
+            WeaviateMemoryStorage: The WeaviateMemoryStorage instance.
         """
         return self
 
     def __exit__(self, exc_type: str, exc_value: str, traceback: str) -> None:
         """
-        Exits the WeaviateMemory instance.
+        Exits the WeaviateMemoryStorage instance.
 
         Args:
             exc_type (str): The type of the exception.
             exc_value (str): The value of the exception.
             traceback (str): The traceback of the exception.
         """
-        logger.info("Closing Weaviate Memory")
-        self.clear()
+        logger.info("Closing Weaviate Memory Storage")
+        self.clear_storage()
         self.client._connection.close()
 
-    def _create_schema(self) -> None:
+    def _initialize_schema(self) -> None:
         """
         Creates the schema for the index.
         """
-        schema = default_schema(self.index)
+        schema = get_default_schema(self.index)
         if not self.client.schema.contains(schema):
             self.client.schema.create_class(schema)
 
-    def add(self, data: str) -> str:
+    def add_data(self, data: str) -> str:
         """
         Adds the given data to the index.
 
@@ -109,7 +109,7 @@ class WeaviateMemory:
         Returns:
             str: A message indicating that the data has been inserted into memory.
         """
-        vector = text_to_vector(data)
+        vector = convert_text_to_vector(data)
 
         doc_uuid = generate_uuid5(data, self.index)
         data_object = {"raw_text": data}
@@ -124,42 +124,27 @@ class WeaviateMemory:
 
         return f"Inserting data into memory at uuid: {doc_uuid}:\n data: {data}"
 
-    def get(self, data: str) -> list[str]:
-        """
-        Returns the most relevant
-            Args:
-            data (str): The data to find relevant data for.
-
-        Returns:
-            list[str]: The list of most relevant data from the index.
-        """
-        return self.get_relevant(data, 1)
-
-    def clear(self) -> None:
+    def clear_storage(self) -> None:
         """
         Clears the index.
         """
         self.client.schema.delete_all()
-
-        # weaviate does not yet have a neat way to just remove the items in an index
-        # without removing the entire schema, therefore we need to re-create it
-        # after a call to delete_all
-        self._create_schema()
+        self._initialize_schema()
 
         logger.info("Cleared Weaviate Memory")
 
-    def get_relevant(self, data: str, num_relevant: int = 5) -> list[str]:
+    def get_most_relevant(self, data: str, num_relevant: int = 5) -> list[str]:
         """
-        Returns the most relevant data from the index based on the given data.
+        Returns the top N most relevant data items from the index based on the given data.
 
         Args:
             data (str): The data to find relevant data for.
-            num_relevant (int, optional): The number of relevant data to return. Defaults to 5.
+            num_relevant (int, optional): The number of relevant data items to return. Defaults to 5.
 
         Returns:
-            list[str]: The list of most relevant data from the index.
+            list[str]: The list of top N most relevant data items from the index.
         """
-        query_embedding = text_to_vector(data)
+        query_embedding = convert_text_to_vector(data)
         results = (
             self.client.query.get(self.index, ["raw_text"])
             .with_near_vector({"vector": query_embedding, "certainty": 0.7})
@@ -174,7 +159,7 @@ class WeaviateMemory:
         else:
             return []
 
-    def get_stats(self) -> dict:
+    def get_storage_stats(self) -> dict:
         """
         Returns the statistics for the index.
 

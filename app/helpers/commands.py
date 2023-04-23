@@ -2,10 +2,10 @@ from ai.coding_assistant import CodingAssistant
 from ai.manager import delete_agent, list_agents, message_agent, start_agent
 from exceptions import ShutDown
 from helpers.file_helpers import append_to_file, read_file, write_to_file
-from memory.memory import WeaviateMemory
+from memory.memory import WeaviateMemoryStorage
 
 
-def handle_command(name: str, args: dict, memory: WeaviateMemory) -> str:
+def handle_command(name: str, args: dict, memory: WeaviateMemoryStorage) -> str:
     """
     Handle the execution of a command based on its name and arguments.
 
@@ -23,7 +23,7 @@ def handle_command(name: str, args: dict, memory: WeaviateMemory) -> str:
         raise ShutDown("Shutdown command received.")
 
     elif name == "memory_add":
-        return memory.add(args["string"])
+        return memory.add_data(args["string"])
 
     elif name == "start_coding_assistant":
         return CodingAssistant(

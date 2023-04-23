@@ -4,7 +4,7 @@ import logging
 from exceptions import ShutDown
 from helpers.chat import create_conversation_message, generate_chat
 from helpers.commands import handle_command
-from memory.memory import WeaviateMemory
+from memory.memory import WeaviateMemoryStorage
 from schemas import MessageDict, ResponseDict
 
 logger = logging.getLogger()
@@ -79,7 +79,7 @@ class AI:
         Returns:
             ResponseDict: The AI-generated response.
         """
-        relevant_memory = self.memory.get_relevant(
+        relevant_memory = self.memory.get_most_relevant(
             data=str(self.message_history[-9:]), num_relevant=10
         )
 
@@ -115,7 +115,7 @@ class AI:
         """
         Starts the AI, including the memory and the AI loop.
         """
-        with WeaviateMemory(ai_name=self.name) as memory:
+        with WeaviateMemoryStorage(ai_name=self.name) as memory:
             self.memory = memory
             self.start_loop()
 
@@ -169,7 +169,7 @@ class AI:
                 f"\nResult: {result} "
                 f"\nHuman Feedback: {self.user_input} "
             )
-            self.memory.add(data=memory_text)
+            self.memory.add_data(data=memory_text)
 
         logger.info("====================")
         logger.info(f"AI {self.name} shut down.")
