@@ -14,6 +14,12 @@ This will install all the necessary dependencies for the project.
 
 ## How to Use
 
+Start Weaviate
+
+```
+docker-compose up -d
+```
+
 Starting the AI.
 
 ```
